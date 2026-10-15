@@ -163,7 +163,14 @@
     .photo-art strong{font-size:11px}
     .hero .cta{padding:10px 14px;font-size:13px}
     @media(max-width:620px){.hero-inner{min-height:auto;padding:20px 16px;grid-template-columns:1fr}.hero h1{font-size:29px}.hero p{font-size:13px}.hero-art{display:none}}
-  </style>
+  
+
+    /* Keep the welcome hero on desktop; hide it on mobile for a compact interface */
+    @media (max-width: 620px) {
+      .hero { display: none !important; }
+    }
+
+</style>
 </head>
 <body>
   <div class="topline">Trophies • Printing • Stationery — Easy ordering on WhatsApp</div>
