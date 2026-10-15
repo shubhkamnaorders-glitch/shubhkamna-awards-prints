@@ -215,7 +215,7 @@ function renderCategories(){
  const nav=$("categoryNav");
  const names=["All",...liveCategories.filter(c=>c.is_active).map(c=>c.name)];
  const unique=[...new Set(names)];
- nav.innerHTML=unique.map(name=>`<button class="${state.category===name?'active':''}" data-category="${safeText(name)}">${safeText(name==="All"?"All Products":name)}</button>`).join("");
+ nav.innerHTML=unique.map(name=>{const category=liveCategories.find(c=>c.name===name);const icon=name==="All"?"🛍️":(category?.icon||"📦");return `<button class="${state.category===name?'active':''}" data-category="${safeText(name)}"><span aria-hidden="true">${safeText(icon)}</span> ${safeText(name==="All"?"All Products":name)}</button>`;}).join("");
  if(!unique.includes(state.category)) state.category="All";
  nav.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.category===state.category));
 }
@@ -242,7 +242,7 @@ async function loadStoreData(){
  db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
  const [settingsRes,categoriesRes,productsRes]=await Promise.all([
   db.from("public_shop_settings").select("*").eq("id","main").maybeSingle(),
-  db.from("categories").select("id,name,sort_order,is_active").eq("is_active",true).order("sort_order"),
+  db.from("categories").select("id,name,icon,sort_order,is_active").eq("is_active",true).order("sort_order"),
   db.from("products").select("id,name,sku,category,material,price,stock,tag,emoji,description,image_url,is_active").eq("is_active",true).order("created_at",{ascending:false})
  ]);
  if(settingsRes.error)console.warn("Shop settings could not load:",settingsRes.error.message);else if(settingsRes.data)applyShopSettings(settingsRes.data);
