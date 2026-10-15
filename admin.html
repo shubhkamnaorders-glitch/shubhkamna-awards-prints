@@ -1021,32 +1021,57 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
 
   async function uploadCategoryPng(id) {
     const c = categories.find(x => String(x.id) === String(id));
-    if (!c) return;
+    if (!c) {
+      alert("Category not found. Please refresh the Admin Panel and try again.");
+      return;
+    }
     const picker = document.createElement("input");
     picker.type = "file";
     picker.accept = "image/png,.png";
+    picker.style.display = "none";
+    document.body.appendChild(picker);
+    status("categoryStatus", `Choose a transparent PNG for ${c.name} (maximum 2 MB).`);
     picker.onchange = async () => {
       const file = picker.files && picker.files[0];
-      if (!file) return;
+      picker.remove();
+      if (!file) {
+        status("categoryStatus", "No file selected. PNG upload cancelled.");
+        return;
+      }
       if (file.type !== "image/png" || !file.name.toLowerCase().endsWith(".png")) {
-        status("categoryStatus", "Please select a PNG image with transparent background.", "error");
+        status("categoryStatus", "Please select a PNG image. JPG/WebP is not accepted for category icons.", "error");
+        alert("Upload failed: please select a PNG file.");
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
         status("categoryStatus", "PNG must be 2 MB or smaller.", "error");
+        alert("Upload failed: PNG must be 2 MB or smaller.");
         return;
       }
-      status("categoryStatus", `Uploading PNG for ${c.name}...`);
+      status("categoryStatus", `Uploading ${file.name} for ${c.name}... please wait.`);
+      const buttons = [...document.querySelectorAll(`[data-cat-png="${CSS.escape(String(c.id))}"]`)];
+      buttons.forEach(b => { b.disabled = true; b.textContent = "Uploading..."; });
       try {
         const icon_url = await uploadStoreAsset(file, "category-icons");
         const { error } = await db.from("categories").update({ icon_url }).eq("id", c.id);
         if (error) throw error;
         await loadCategories();
-        status("categoryStatus", `PNG icon saved for ${c.name}.`, "success");
+        status("categoryStatus", `SUCCESS: PNG icon saved for ${c.name}. Preview is now shown beside the category name.`, "success");
+        alert(`Upload successful! PNG icon saved for ${c.name}.`);
       } catch (error) {
-        status("categoryStatus", error.message || "Could not upload category PNG.", "error");
+        console.error("Category PNG upload failed:", error);
+        const message = error && error.message ? error.message : String(error || "Unknown error");
+        status("categoryStatus", `UPLOAD FAILED: ${message}`, "error");
+        alert(`PNG upload failed.
+
+${message}
+
+Please send a screenshot of this message.`);
+      } finally {
+        document.querySelectorAll(`[data-cat-png="${CSS.escape(String(c.id))}"]`).forEach(b => { b.disabled = false; b.textContent = "Upload PNG"; });
       }
     };
+    document.body.appendChild(picker);
     picker.click();
   }
 
