@@ -1,322 +1,840 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shubhkamna Awards & Prints — Premium Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubhkamna Awards & Prints — Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
 <style>
-:root{
---navy:#101735;--navy2:#263d79;--purple:#7046a8;
---gold:#e9b949;--gold2:#ffe8a3;--bg:#f2efff;
---ink:#192449;--muted:#66719a;--line:#deddf5;
+:root {
+  --bg: #080f20;
+  --panel: #121d35;
+  --panel2: #192744;
+  --gold: #f5c76b;
+  --gold2: #e5a83d;
+  --text: #f5f7ff;
+  --muted: #aab8d2;
+  --border: #344463;
+  --green: #34d399;
+  --red: #fb7185;
 }
-*{box-sizing:border-box}
-body{
-margin:0;color:var(--ink);font:15px/1.55 Inter,Arial,sans-serif;
-background:
-radial-gradient(ellipse at 5% 0%,#ffe5b7 0,transparent 30%),
-radial-gradient(ellipse at 95% 5%,#dcd3ff 0,transparent 32%),
-linear-gradient(140deg,#f9f5ff,#edf3ff 55%,#fff5e6);
-min-height:100vh
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 5% 10%, #263a6c 0, transparent 40%),
+    radial-gradient(ellipse at 95% 30%, #52266e 0, transparent 38%),
+    linear-gradient(135deg, #080f20, #111b35 55%, #21153c);
+  background-attachment: fixed;
 }
-header{
-position:sticky;top:0;z-index:10;color:#fff;
-background:linear-gradient(115deg,#101735,#263d79 60%,#633b8d);
-padding:15px max(15px,calc((100% - 1100px)/2));
-display:flex;justify-content:space-between;align-items:center;gap:10px;
-border-bottom:2px solid var(--gold);box-shadow:0 8px 30px #151b4530
+header {
+  background: linear-gradient(110deg,#0b1731,#1d3970,#59317b);
+  border-bottom: 2px solid var(--gold);
+  padding: 16px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 8px 28px #0005;
 }
-header b{font-size:17px;letter-spacing:.2px}
-header a{color:white;text-decoration:none;border:1px solid #ffffff55;border-radius:20px;padding:8px 12px;font-size:13px}
-main{max-width:1100px;margin:25px auto;padding:0 15px 85px}
-.panel{
-background:linear-gradient(145deg,#fff,#f8f6ff);
-border:1px solid var(--line);border-radius:22px;padding:22px;margin-bottom:19px;
-box-shadow:0 15px 40px #28366b15
+.brand {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .2px;
 }
-#loginPanel{
-max-width:650px;margin:38px auto;padding:clamp(23px,5vw,40px);
-background:radial-gradient(ellipse at top right,#e6dcff 0,transparent 48%),
-linear-gradient(145deg,#fff,#f5f0ff);
-border:1px solid #d7cafa;box-shadow:0 25px 70px #38256825
+.brand span { color: var(--gold); }
+a { color: inherit; }
+.top-btn {
+  color: white;
+  text-decoration: none;
+  border: 1px solid #ffffff66;
+  border-radius: 30px;
+  padding: 10px 16px;
+  font-size: 13px;
+  white-space: nowrap;
 }
-.brand-badge,.badge{
-display:inline-block;border-radius:30px;padding:6px 11px;
-background:linear-gradient(110deg,#fff0c1,#f1d17a);color:#65470e;
-border:1px solid #e5c46d;font-size:11px;font-weight:800;letter-spacing:.5px
+.top-btn:hover { background: #ffffff18; }
+
+main {
+  width: min(1120px, 94%);
+  margin: 28px auto 60px;
 }
-#loginPanel h1{
-font-size:clamp(27px,4vw,35px);margin:15px 0 7px;
-background:linear-gradient(100deg,#15234b,#7046a8,#a36a16);
--webkit-background-clip:text;background-clip:text;color:transparent
+.panel {
+  background: linear-gradient(145deg, #17243d, #101a30);
+  border: 1px solid #4b5c7d;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 18px 45px #0004;
 }
-h1{font-size:25px;margin:0 0 8px}
-h2{font-size:19px;margin:0 0 12px;color:#283b78}
-h3{font-size:16px;margin:0}
-label{display:block;font-size:12px;font-weight:800;letter-spacing:.25px;margin:12px 0 6px;color:#344369}
-input,select,textarea{
-width:100%;padding:12px 13px;border:1px solid #d5d8ef;border-radius:12px;
-font:inherit;color:var(--ink);background:linear-gradient(135deg,#fff,#f8f8ff);
-transition:.2s
+h1,h2,h3 { margin-top: 0; }
+h1 { font-size: 26px; }
+h2 { font-size: 20px; color: var(--gold); }
+h3 { font-size: 16px; }
+p { line-height: 1.55; }
+.muted { color: var(--muted); font-size: 13px; }
+.hidden { display: none !important; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 22px;
 }
-input:focus,select:focus,textarea:focus{outline:none;border-color:#8762d5;box-shadow:0 0 0 4px #8762d525}
-input[type=checkbox],input[type=file]{accent-color:#7046a8}
-textarea{min-height:90px;resize:vertical}
-button{
-border:1px solid #7460b3;border-radius:12px;padding:11px 15px;
-background:linear-gradient(115deg,#17264d,#4c3c91 65%,#7651b9);
-color:white;font-weight:800;cursor:pointer;
-box-shadow:0 6px 16px #48347c25;transition:transform .18s,box-shadow .18s
+.field { min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #e5ebff;
 }
-button:hover{transform:translateY(-2px);box-shadow:0 9px 24px #48347c40}
-button.secondary{background:linear-gradient(120deg,#edf0ff,#e7e1ff);color:#303d78;border-color:#d5d0f4;box-shadow:none}
-button.danger{background:linear-gradient(120deg,#a92348,#d94c68);color:white;border:0}
-#addSizeBtn{background:linear-gradient(110deg,#e9b949,#ffe7a1);color:#33234d;border-color:#d8a63e}
-.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
-.actions button{min-height:43px}
-.muted{font-size:13px;color:var(--muted)}
-.status{
-white-space:pre-wrap;background:linear-gradient(110deg,#f0f0ff,#fff8e9);
-border:1px solid #dddaf5;padding:12px;border-radius:12px;margin-top:13px;font-size:13px
+input, select, textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #465a7d;
+  border-radius: 11px;
+  padding: 13px;
+  background: #0b1428;
+  color: #f7f8ff;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
 }
-.hidden{display:none!important}
-.hero{
-background:linear-gradient(120deg,#101735,#263d79 58%,#663c91);
-color:#fff;border:1px solid #d9b65c;box-shadow:0 18px 40px #24285b35
+input::placeholder, textarea::placeholder { color: #8998b5; }
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px #f5c76b20;
 }
-.hero h1{color:white}
-.hero p{color:#e0e5f7}
-.hero .status{background:#ffffff13;border-color:#ffffff35;color:#fff}
-.topline,.size-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.size-card{
-padding:17px;border:1px solid #e4ce91;border-radius:18px;margin:14px 0;
-background:linear-gradient(135deg,#fff9e9,#f4efff);
-box-shadow:0 8px 22px #604a9210
+select option { background: #101a30; color: white; }
+textarea { min-height: 100px; resize: vertical; }
+input[type="checkbox"] { width: auto; accent-color: var(--gold); }
+input[type="file"] { padding: 10px; }
+.help { font-size: 12px; color: var(--muted); margin-top: 7px; }
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 17px;
+  font: inherit;
+  font-weight: 750;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .18s ease;
 }
-.size-no{
-display:inline-grid;place-items:center;width:29px;height:29px;margin-right:7px;
-border-radius:9px;background:linear-gradient(135deg,#f9df92,#e9b949);
-color:#33234d;font-weight:900
+button:hover { transform: translateY(-1px); filter: brightness(1.08); }
+button:disabled { opacity: .55; cursor: wait; transform: none; }
+.btn-gold {
+  background: linear-gradient(135deg,var(--gold),var(--gold2));
+  color: #241706;
 }
-.discount-hint{padding:10px 12px;background:#eee9ff;border-radius:10px;color:#543b91}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.item{
-min-width:0;overflow-wrap:anywhere;padding:13px;border-radius:18px;
-border:1px solid #dedcf5;background:linear-gradient(145deg,#fff,#f7f5ff);
-box-shadow:0 8px 22px #27366a0c
+.btn-dark {
+  background: #283956;
+  border: 1px solid #506487;
+  color: white;
 }
-.item img{
-width:100%;height:155px;object-fit:contain;border-radius:13px;
-background:linear-gradient(135deg,#fff2d3,#eeeaff);border:1px solid #f0e5c8
+.btn-red {
+  background: #7f2438;
+  border: 1px solid #b84660;
+  color: white;
 }
-.item h3{margin:10px 0 6px;color:#263b78}
-.item p{font-size:13px;color:var(--muted);margin:5px 0}
-#formTitle{color:#493a8d}
-hr{border:0;border-top:1px solid #e3dff5}
-@media(max-width:650px){
-header{padding:12px 13px}header b{font-size:14px}
-main{padding:0 10px 95px;margin:13px auto}
-.panel{padding:15px;border-radius:17px}
-#loginPanel{margin:20px auto;padding:22px 18px}
-.row,.three{grid-template-columns:1fr}
-.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.item{padding:9px;border-radius:14px}.item img{height:110px}
-.actions button{flex:1}
-.size-card{padding:13px}
-input,select,textarea{font-size:16px}
+.btn-green {
+  background: #126b54;
+  border: 1px solid #2e9d7c;
+  color: white;
+}
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.status { margin-top: 14px; font-size: 13px; color: var(--muted); }
+.status.error { color: #fda4af; }
+.status.success { color: #6ee7b7; }
+
+.size-card {
+  background: #0b1428;
+  border: 1px solid #3b4c6c;
+  padding: 16px;
+  border-radius: 14px;
+  margin: 12px 0;
+}
+.size-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.size-grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 12px;
+}
+.size-grid label { font-size: 12px; }
+.size-grid input { padding: 11px 9px; }
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.check-row label { margin: 0; }
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.toolbar input { max-width: 360px; }
+.product-list { display: grid; gap: 12px; }
+.product-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px;
+  background: #0b1428;
+  border: 1px solid #354767;
+  border-radius: 14px;
+}
+.product-item img, .product-emoji {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #202d48;
+}
+.product-emoji {
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+}
+.product-name { font-weight: 800; margin-bottom: 6px; }
+.product-meta { color: var(--muted); font-size: 12px; line-height: 1.7; }
+.product-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.product-actions button { padding: 9px 12px; }
+
+.login-wrap {
+  max-width: 470px;
+  margin: 65px auto;
+}
+.login-logo {
+  font-size: 38px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.login-wrap .panel { padding: 30px; }
+.login-wrap h1 { text-align: center; }
+.login-wrap .muted { text-align: center; margin-bottom: 25px; }
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 28px 10px;
+}
+hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
+
+@media(max-width:700px) {
+  header { padding: 14px 4%; }
+  .brand { font-size: 14px; }
+  main { width: 94%; margin-top: 18px; }
+  .panel { padding: 17px; }
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+  .field.full { grid-column: auto; }
+  .size-grid { grid-template-columns: 1fr 1fr; }
+  .product-item { grid-template-columns: 65px 1fr; gap: 12px; }
+  .product-item img, .product-emoji { width: 65px; height: 65px; }
+  .product-actions { grid-column: 1 / -1; }
+  .toolbar input { max-width: 100%; }
+  .login-wrap { margin: 30px auto; }
 }
 </style>
 </head>
+
 <body>
 <header>
-<b>✦ Shubhkamna Awards & Prints — Admin</b>
-<a href="./">View Store ↗</a>
+  <div class="brand">✦ Shubhkamna <span>Awards & Prints</span> — Admin</div>
+  <a class="top-btn" href="index.html" target="_blank">View Store ↗</a>
 </header>
+
 <main>
-<section id="loginPanel" class="panel">
-<span class="brand-badge">✦ SHUBHKAMNA • ADMIN ACCESS</span>
-<h1>Welcome Back!</h1>
-<p class="muted">Sign in to manage your products, pricing and stock.</p>
-<form id="loginForm">
-<label>Email Address</label>
-<input id="email" type="email" autocomplete="username" required>
-<label>Password</label>
-<input id="password" type="password" autocomplete="current-password" required>
-<div class="actions"><button type="submit">✦ Sign in to dashboard</button></div>
-</form>
-<div id="loginStatus" class="status">Connecting…</div>
-</section>
+  <section id="loginSection" class="login-wrap">
+    <div class="login-logo">✦</div>
+    <div class="panel">
+      <h1>Admin Login</h1>
+      <p class="muted">Manage your products and store inventory.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" type="email" autocomplete="username" required placeholder="Admin email">
+        </div>
+        <div class="field" style="margin-top:16px">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" required placeholder="Your password">
+        </div>
+        <div class="actions">
+          <button class="btn-gold" id="loginBtn" type="submit">Sign In Securely</button>
+        </div>
+        <div id="loginStatus" class="status" role="status"></div>
+      </form>
+    </div>
+  </section>
 
-<section id="dashboard" class="hidden">
-<div class="panel hero">
-<div class="topline">
-<div><span class="badge">✦ PRODUCT STUDIO</span>
-<h1 style="margin-top:12px">Product Manager</h1>
-<p>Manage photos, sizes, original prices, discounts and stock.</p></div>
-<button id="logoutBtn" class="secondary">Log out ↗</button>
-</div>
-<div id="status" class="status">Connected.</div>
-</div>
+  <section id="dashboard" class="hidden">
+    <div class="panel">
+      <div class="toolbar">
+        <div>
+          <h1 style="margin-bottom:6px">Product Studio</h1>
+          <div class="muted">Add products, set sizes and manage stock.</div>
+        </div>
+        <button class="btn-dark" id="logoutBtn" type="button">Log Out</button>
+      </div>
+      <div id="globalStatus" class="status" role="status"></div>
+    </div>
 
-<div class="panel">
-<h2 id="formTitle">＋ Add a product</h2>
-<form id="productForm">
-<input id="productId" type="hidden">
-<div class="row">
-<div><label>Product name *</label><input id="name" required maxlength="120" placeholder="Classic Gold Trophy"></div>
-<div><label>Product ID / SKU</label><input id="sku" maxlength="60" placeholder="SWT-001"><p class="muted">Leave blank to use the database ID.</p></div>
-</div>
-<div class="row">
-<div><label>Category *</label><select id="category" required>
-<option>Trophies & Awards</option><option>Medals & Mementos</option><option>Printing</option><option>Stationery</option><option>Custom Orders</option>
-</select></div>
-<div><label>Material</label><input id="material" maxlength="120" placeholder="Metal, acrylic, wood, crystal..."></div>
-</div>
-<div class="row">
-<div><label>Product photo</label><input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
-<p class="muted">JPG, PNG or WebP; maximum 5 MB.</p>
-<img id="preview" class="hidden" alt="Preview" style="max-width:190px;max-height:150px;object-fit:contain;border-radius:12px"></div>
-<div><label>Description / customization details</label><textarea id="description" maxlength="1000" placeholder="Name printing, logo, finish, packing..."></textarea>
-<label>Tag</label><input id="tag" maxlength="40" placeholder="Popular / New">
-<p><label style="display:flex;align-items:center;gap:8px"><input id="active" type="checkbox" checked style="width:auto"> Show on public website</label></p></div>
-</div>
-<hr style="margin:22px 0">
-<div class="topline">
-<div><h2>Size & Pricing</h2><p class="muted">Each size has its own original price, discounted price and stock.</p></div>
-<button id="addSizeBtn" type="button">＋ Add size</button>
-</div>
-<div id="sizes"></div>
-<div class="actions"><button type="submit">💾 Save product</button><button id="resetBtn" class="secondary" type="button">Clear form</button></div>
-</form>
-</div>
+    <div class="panel">
+      <h2 id="formHeading">＋ Add a product</h2>
+      <form id="productForm">
+        <input id="productId" type="hidden">
 
-<div class="panel">
-<div class="topline"><h2>Current products</h2><button id="refreshBtn" class="secondary">↻ Refresh</button></div>
-<div id="products" class="products"></div>
-</div>
-</section>
+        <div class="grid">
+          <div class="field">
+            <label for="productName">Product name *</label>
+            <input id="productName" required maxlength="160" placeholder="Classic Gold Trophy">
+          </div>
+
+          <div class="field">
+            <label for="sku">Product ID / SKU</label>
+            <input id="sku" maxlength="80" placeholder="SWT-001">
+            <div class="help">Leave blank to use the database ID.</div>
+          </div>
+
+          <div class="field">
+            <label for="category">Category *</label>
+            <select id="category" required>
+              <option value="Trophies & Awards">Trophies & Awards</option>
+              <option value="Medals">Medals</option>
+              <option value="Mementos">Mementos</option>
+              <option value="Plaques">Plaques</option>
+              <option value="Customized Gifts">Customized Gifts</option>
+              <option value="Printing">Printing</option>
+              <option value="Certificates">Certificates</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="material">Material</label>
+            <input id="material" maxlength="160" placeholder="Metal, acrylic, wood, crystal...">
+          </div>
+
+          <div class="field">
+            <label for="photo">Product photo</label>
+            <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+            <div class="help">JPG, PNG or WebP; maximum 5 MB.</div>
+            <div id="photoStatus" class="help"></div>
+          </div>
+
+          <div class="field">
+            <label for="description">Description / customization details</label>
+            <textarea id="description" maxlength="3000" placeholder="Name printing, logo, finish, packing..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="tag">Tag</label>
+            <input id="tag" maxlength="80" placeholder="Popular / New">
+          </div>
+
+          <div class="field">
+            <label for="emoji">Fallback icon</label>
+            <input id="emoji" maxlength="20" value="🏆" placeholder="🏆">
+            <div class="help">Shown if no product photo is uploaded.</div>
+          </div>
+        </div>
+
+        <div class="check-row">
+          <input id="isActive" type="checkbox" checked>
+          <label for="isActive">Show on public website</label>
+        </div>
+
+        <hr>
+
+        <div class="toolbar">
+          <div>
+            <h2 style="margin-bottom:5px">Sizes & Pricing</h2>
+            <div class="muted">Add each available size with its price and stock.</div>
+          </div>
+          <button class="btn-dark" id="addSizeBtn" type="button">＋ Add Size</button>
+        </div>
+
+        <div id="sizesContainer"></div>
+
+        <div class="actions">
+          <button id="saveBtn" class="btn-gold" type="submit">Save Product</button>
+          <button id="resetBtn" class="btn-dark" type="button">Clear Form</button>
+        </div>
+        <div id="formStatus" class="status" role="status"></div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="toolbar">
+        <div>
+          <h2 style="margin-bottom:5px">Your Products</h2>
+          <div class="muted">Edit, hide or delete products.</div>
+        </div>
+        <input id="searchProducts" type="search" placeholder="Search name, SKU or category...">
+      </div>
+      <div id="productList" class="product-list">
+        <div class="empty">Loading products...</div>
+      </div>
+    </div>
+  </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
+
 <script>
-const $=id=>document.getElementById(id);
-let db=null,currentUser=null,items=[],photoUrl="",variantCache={};
-function say(msg,where="status"){const el=$(where);if(el)el.textContent=msg}
-function configured(){return !!(window.SUPABASE_URL&&window.SUPABASE_ANON_KEY&&!window.SUPABASE_URL.includes("PASTE_")&&!window.SUPABASE_ANON_KEY.includes("PASTE_"))}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function showDashboard(){$("loginPanel").classList.add("hidden");$("dashboard").classList.remove("hidden")}
-function addSize(v={}){
-const n=$("sizes").children.length+1,d=document.createElement("div");d.className="size-card";
-d.innerHTML=`<div class="size-head"><h3><span class="size-no">${n}</span> Size option</h3><button type="button" class="danger remove-size">Remove</button></div>
-<div class="row three">
-<div><label>Size label *</label><input class="size-label" required maxlength="80" placeholder="4 inch / Small" value="${esc(v.size_label||"")}"></div>
-<div><label>Original price (₹) *</label><input class="original-price" type="number" min="0" step=".01" required placeholder="500" value="${v.original_price??""}"></div>
-<div><label>Discount price (₹) *</label><input class="discount-price" type="number" min="0" step=".01" required placeholder="399" value="${v.discount_price??""}"></div>
-</div>
-<div class="row"><div><label>Stock quantity *</label><input class="size-stock" type="number" min="0" step="1" required value="${v.stock??0}"></div>
-<div><p class="muted discount-hint">Enter prices to calculate discount.</p></div></div>`;
-d.querySelector(".remove-size").onclick=()=>{if($("sizes").children.length===1){say("At least one size is required.");return}d.remove();renumberSizes()};
-d.querySelectorAll(".original-price,.discount-price").forEach(x=>x.addEventListener("input",()=>{
-const a=Number(d.querySelector(".original-price").value),b=Number(d.querySelector(".discount-price").value);
-d.querySelector(".discount-hint").textContent=(a>0&&b>=0&&b<=a)?`Discount: ${Math.round((a-b)/a*100)}%`:"Discount price must not exceed original price.";
-}));
-$("sizes").appendChild(d);renumberSizes();
-}
-function renumberSizes(){[...$("sizes").children].forEach((e,i)=>e.querySelector(".size-no").textContent=i+1)}
-function readSizes(){return [...$("sizes").querySelectorAll(".size-card")].map(c=>({size_label:c.querySelector(".size-label").value.trim(),original_price:Number(c.querySelector(".original-price").value),discount_price:Number(c.querySelector(".discount-price").value),stock:Number(c.querySelector(".size-stock").value)}))}
-async function init(){
-if(!configured()){say("Check config.js: project URL and publishable key are required.","loginStatus");return}
-db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
-const {data}=await db.auth.getSession();
-if(data.session){currentUser=data.session.user;showDashboard();await loadProducts()}
-else say("Ready. Sign in with your Supabase admin account.","loginStatus");
-}
-$("loginForm").addEventListener("submit",async e=>{
-e.preventDefault();if(!configured()){say("Check config.js first.","loginStatus");return}
-if(!db)db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
-say("Signing in…","loginStatus");
-const {data,error}=await db.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
-if(error){say(error.message,"loginStatus");return}
-currentUser=data.user;showDashboard();await loadProducts();
-});
-$("logoutBtn").onclick=async()=>{await db.auth.signOut();currentUser=null;$("dashboard").classList.add("hidden");$("loginPanel").classList.remove("hidden");say("Logged out.","loginStatus")};
-$("addSizeBtn").onclick=()=>addSize();
-$("resetBtn").onclick=resetForm;
-$("refreshBtn").onclick=loadProducts;
-$("photo").addEventListener("change",()=>{
-const f=$("photo").files[0];if(!f)return;
-if(f.size>5*1024*1024||!["image/jpeg","image/png","image/webp"].includes(f.type)){say("Use JPG, PNG or WebP up to 5 MB.");$("photo").value="";return}
-$("preview").src=URL.createObjectURL(f);$("preview").classList.remove("hidden");
-});
-async function uploadPhoto(file){
-const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
-const path=`${currentUser.id}/${crypto.randomUUID()}.${ext}`;
-const {error}=await db.storage.from("product-images").upload(path,file,{upsert:false,contentType:file.type});
-if(error)throw error;
-return db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
-}
-async function loadProducts(){
-say("Loading products…");
-const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
-if(error){say("Could not load products: "+error.message);return}
-items=data||[];variantCache={};
-for(const p of items){
-const r=await db.from("product_variants").select("*").eq("product_id",p.id).order("id");
-if(r.error){say("Variant loading error: "+r.error.message);return}
-variantCache[p.id]=r.data||[];
-}
-renderList();say(items.length+" product(s) loaded.");
-}
-function renderList(){
-$("products").innerHTML=items.length?items.map(p=>{
-const vs=variantCache[p.id]||[];
-const priceText=vs.length?vs.map(v=>`${esc(v.size_label)}: ₹${Number(v.discount_price).toLocaleString("en-IN")} (MRP ₹${Number(v.original_price).toLocaleString("en-IN")}, stock ${v.stock})`).join("<br>"):`Base price ₹${Number(p.price).toLocaleString("en-IN")}`;
-return `<article class="item"><img src="${esc(p.image_url||"")}" alt="" onerror="this.style.display='none'"><h3>${esc(p.name)}</h3><p><b>ID:</b> ${esc(p.sku||p.id)} · ${esc(p.category)}</p><p><b>Material:</b> ${esc(p.material||"—")}</p><p>${priceText}</p><p>${p.is_active?"Visible on store":"Hidden from store"}</p><p>${esc(p.description||"")}</p><div class="actions"><button class="secondary" data-edit="${p.id}">Edit</button><button class="secondary" data-toggle="${p.id}">${p.is_active?"Hide":"Show"}</button><button class="danger" data-delete="${p.id}">Delete</button></div></article>`;
-}).join(""):'<p class="muted">No products yet. Add your first product above.</p>';
-}
-function resetForm(){
-$("productForm").reset();$("productId").value="";$("sizes").innerHTML="";addSize();
-$("active").checked=true;photoUrl="";$("preview").classList.add("hidden");$("formTitle").textContent="＋ Add a product";
-}
-$("productForm").addEventListener("submit",async e=>{
-e.preventDefault();
-try{
-const sizes=readSizes();
-if(!sizes.length||sizes.some(v=>!v.size_label||v.original_price<0||v.discount_price<0||v.discount_price>v.original_price||v.stock<0)){say("Check each size: discount price cannot exceed original price.");return}
-say("Saving product…");
-const f=$("photo").files[0];if(f)photoUrl=await uploadPhoto(f);
-const existingId=$("productId").value,base=sizes[0];
-const row={name:$("name").value.trim(),sku:$("sku").value.trim()||null,category:$("category").value,material:$("material").value.trim(),price:base.discount_price,stock:sizes.reduce((a,v)=>a+v.stock,0),tag:$("tag").value.trim()||$("category").value,emoji:"📦",description:$("description").value.trim(),image_url:photoUrl,is_active:$("active").checked};
-let productId=existingId;
-if(existingId){const {error}=await db.from("products").update(row).eq("id",existingId);if(error)throw error}
-else{const {data,error}=await db.from("products").insert(row).select("id").single();if(error)throw error;productId=data.id}
-const {error:delError}=await db.from("product_variants").delete().eq("product_id",productId);if(delError)throw delError;
-const variantRows=sizes.map(v=>({...v,product_id:productId}));
-const {error:varError}=await db.from("product_variants").insert(variantRows);if(varError)throw varError;
-resetForm();await loadProducts();say("Product and sizes saved successfully.");
-}catch(err){say("Could not save product: "+err.message)}
-});
-$("products").addEventListener("click",async e=>{
-const edit=e.target.closest("[data-edit]"),toggle=e.target.closest("[data-toggle]"),del=e.target.closest("[data-delete]");
-try{
-if(edit){
-const p=items.find(x=>String(x.id)===edit.dataset.edit);if(!p)return;
-$("productId").value=p.id;$("name").value=p.name;$("sku").value=p.sku||"";
-$("category").value=p.category;$("material").value=p.material||"";$("tag").value=p.tag||"";
-$("description").value=p.description||"";$("active").checked=p.is_active;photoUrl=p.image_url||"";
-if(photoUrl){$("preview").src=photoUrl;$("preview").classList.remove("hidden")}else $("preview").classList.add("hidden");
-$("sizes").innerHTML="";const vs=variantCache[p.id]||[];
-if(vs.length)vs.forEach(v=>addSize(v));else addSize({size_label:"Default",original_price:p.price,discount_price:p.price,stock:p.stock});
-$("formTitle").textContent="Edit product";window.scrollTo({top:0,behavior:"smooth"});
-}
-if(toggle){const p=items.find(x=>String(x.id)===toggle.dataset.toggle);const {error}=await db.from("products").update({is_active:!p.is_active}).eq("id",p.id);if(error)throw error;await loadProducts()}
-if(del){const p=items.find(x=>String(x.id)===del.dataset.delete);if(!confirm(`Delete "${p.name}"? This cannot be undone.`))return;const {error}=await db.from("products").delete().eq("id",p.id);if(error)throw error;await loadProducts()}
-}catch(err){say("Action failed: "+err.message)}
-});
-resetForm();init();
+(() => {
+  const $ = id => document.getElementById(id);
+  let db = null;
+  let products = [];
+  let variants = [];
+  let currentImageUrl = "";
+
+  function status(id, message, type = "") {
+    const el = $(id);
+    el.textContent = message || "";
+    el.className = "status" + (type ? " " + type : "");
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[ch]));
+  }
+
+  function money(value) {
+    const n = Number(value || 0);
+    return "₹" + n.toLocaleString("en-IN");
+  }
+
+  function getClient() {
+    if (!window.supabase || !window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) {
+      throw new Error("Supabase config missing. Check config.js and its file path.");
+    }
+    return window.supabase.createClient(
+      window.SUPABASE_URL,
+      window.SUPABASE_ANON_KEY
+    );
+  }
+
+  function addSize(data = {}) {
+    const card = document.createElement("div");
+    card.className = "size-card";
+    card.innerHTML = `
+      <div class="size-head">
+        <strong>Size / Variant</strong>
+        <button type="button" class="btn-red remove-size">Remove</button>
+      </div>
+      <div class="size-grid">
+        <div>
+          <label>Size label *</label>
+          <input class="size-label" required maxlength="80"
+            placeholder="6 inch" value="${escapeHtml(data.size_label || "")}">
+        </div>
+        <div>
+          <label>Original price (₹)</label>
+          <input class="original-price" type="number" min="0" step="0.01"
+            placeholder="1000" value="${data.original_price ?? ""}">
+        </div>
+        <div>
+          <label>Discount price (₹) *</label>
+          <input class="discount-price" type="number" min="0" step="0.01"
+            required placeholder="800" value="${data.discount_price ?? ""}">
+        </div>
+        <div>
+          <label>Stock quantity</label>
+          <input class="size-stock" type="number" min="0" step="1"
+            value="${data.stock ?? 0}">
+        </div>
+      </div>`;
+    card.querySelector(".remove-size").addEventListener("click", () => {
+      if ($("sizesContainer").children.length > 1) {
+        card.remove();
+      } else {
+        status("formStatus", "Keep at least one size/variant.", "error");
+      }
+    });
+    $("sizesContainer").appendChild(card);
+  }
+
+  function readSizes() {
+    const cards = [...$("sizesContainer").querySelectorAll(".size-card")];
+    if (!cards.length) throw new Error("Please add at least one size.");
+
+    return cards.map(card => {
+      const size_label = card.querySelector(".size-label").value.trim();
+      const originalRaw = card.querySelector(".original-price").value;
+      const discountRaw = card.querySelector(".discount-price").value;
+      const stockRaw = card.querySelector(".size-stock").value;
+      const original_price = originalRaw === "" ? null : Number(originalRaw);
+      const discount_price = Number(discountRaw);
+      const stock = stockRaw === "" ? 0 : Number(stockRaw);
+
+      if (!size_label) throw new Error("Please enter every size label.");
+      if (discountRaw === "" || !Number.isFinite(discount_price) || discount_price < 0)
+        throw new Error("Enter a valid discount price for every size.");
+      if (original_price !== null && (!Number.isFinite(original_price) || original_price < 0))
+        throw new Error("Enter a valid original price.");
+      if (!Number.isInteger(stock) || stock < 0)
+        throw new Error("Stock must be a whole number, zero or higher.");
+
+      return { size_label, original_price, discount_price, stock };
+    });
+  }
+
+  function resetForm() {
+    $("productForm").reset();
+    $("productId").value = "";
+    $("isActive").checked = true;
+    $("emoji").value = "🏆";
+    $("formHeading").textContent = "＋ Add a product";
+    $("saveBtn").textContent = "Save Product";
+    $("photoStatus").textContent = "";
+    $("sizesContainer").innerHTML = "";
+    currentImageUrl = "";
+    addSize();
+    status("formStatus", "");
+  }
+
+  async function uploadPhoto(file) {
+    if (!file) return currentImageUrl;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      throw new Error("Photo must be JPG, PNG or WebP.");
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error("Photo must be 5 MB or smaller.");
+    }
+
+    const ext = file.type === "image/png" ? "png" :
+      file.type === "image/webp" ? "webp" : "jpg";
+    const path = Date.now() + "-" +
+      Math.random().toString(36).slice(2, 10) + "." + ext;
+
+    const { error } = await db.storage
+      .from("product-images")
+      .upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type
+      });
+
+    if (error) throw error;
+
+    const { data } = db.storage.from("product-images").getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  async function loadProducts() {
+    $("productList").innerHTML = '<div class="empty">Loading products...</div>';
+
+    const { data, error } = await db
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    products = data || [];
+    const ids = products.map(p => p.id);
+    variants = [];
+
+    if (ids.length) {
+      const { data: vdata, error: verror } = await db
+        .from("product_variants")
+        .select("*")
+        .in("product_id", ids);
+
+      if (verror) throw verror;
+      variants = vdata || [];
+    }
+    renderProducts();
+  }
+
+  function renderProducts() {
+    const query = $("searchProducts").value.trim().toLowerCase();
+    const filtered = products.filter(p =>
+      [p.name, p.sku, p.category, p.material]
+        .some(v => String(v || "").toLowerCase().includes(query))
+    );
+
+    if (!filtered.length) {
+      $("productList").innerHTML =
+        '<div class="empty">No products found. Add your first product above.</div>';
+      return;
+    }
+
+    $("productList").innerHTML = filtered.map(p => {
+      const pv = variants.filter(v => String(v.product_id) === String(p.id));
+      const priceText = pv.length
+        ? pv.map(v => `${escapeHtml(v.size_label)}: ${money(v.discount_price)}`).join(" · ")
+        : money(p.price);
+
+      const photo = p.image_url
+        ? `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy">`
+        : `<div class="product-emoji">${escapeHtml(p.emoji || "🏆")}</div>`;
+
+      return `
+        <div class="product-item">
+          ${photo}
+          <div>
+            <div class="product-name">${escapeHtml(p.name)}</div>
+            <div class="product-meta">
+              SKU: ${escapeHtml(p.sku || p.id)}<br>
+              ${escapeHtml(p.category || "Other")} · ${escapeHtml(p.material || "Material not set")}<br>
+              ${priceText}<br>
+              ${p.is_active ? "🟢 Active on store" : "⚪ Hidden from store"}
+            </div>
+          </div>
+          <div class="product-actions">
+            <button type="button" class="btn-gold" data-edit="${escapeHtml(p.id)}">Edit</button>
+            <button type="button" class="btn-dark" data-toggle="${escapeHtml(p.id)}">
+              ${p.is_active ? "Hide" : "Show"}
+            </button>
+            <button type="button" class="btn-red" data-delete="${escapeHtml(p.id)}">Delete</button>
+          </div>
+        </div>`;
+    }).join("");
+
+    $("productList").querySelectorAll("[data-edit]").forEach(btn =>
+      btn.addEventListener("click", () => editProduct(btn.dataset.edit)));
+    $("productList").querySelectorAll("[data-toggle]").forEach(btn =>
+      btn.addEventListener("click", () => toggleProduct(btn.dataset.toggle)));
+    $("productList").querySelectorAll("[data-delete]").forEach(btn =>
+      btn.addEventListener("click", () => deleteProduct(btn.dataset.delete)));
+  }
+
+  async function saveProduct(event) {
+    event.preventDefault();
+    const btn = $("saveBtn");
+    btn.disabled = true;
+    status("formStatus", "Saving product...");
+
+    try {
+      const sizeData = readSizes();
+      const file = $("photo").files[0];
+      const image_url = await uploadPhoto(file);
+
+      const prices = sizeData.map(v => v.discount_price);
+      const totalStock = sizeData.reduce((sum, v) => sum + v.stock, 0);
+
+      const payload = {
+        name: $("productName").value.trim(),
+        sku: $("sku").value.trim() || null,
+        category: $("category").value,
+        material: $("material").value.trim(),
+        description: $("description").value.trim(),
+        tag: $("tag").value.trim(),
+        emoji: $("emoji").value.trim() || "🏆",
+        is_active: $("isActive").checked,
+        image_url,
+        price: Math.min(...prices),
+        stock: totalStock
+      };
+
+      if (!payload.name) throw new Error("Product name is required.");
+
+      const productId = $("productId").value;
+      let savedProduct;
+
+      if (productId) {
+        const { data, error } = await db.from("products")
+          .update(payload).eq("id", productId).select().single();
+        if (error) throw error;
+        savedProduct = data;
+      } else {
+        const { data, error } = await db.from("products")
+          .insert(payload).select().single();
+        if (error) throw error;
+        savedProduct = data;
+      }
+
+      const { error: deleteError } = await db.from("product_variants")
+        .delete().eq("product_id", savedProduct.id);
+      if (deleteError) throw deleteError;
+
+      const rows = sizeData.map(v => ({
+        ...v,
+        product_id: savedProduct.id
+      }));
+
+      const { error: insertError } = await db.from("product_variants")
+        .insert(rows);
+      if (insertError) throw insertError;
+
+      status("formStatus", "Product saved successfully!", "success");
+      resetForm();
+      await loadProducts();
+      status("globalStatus", "Product saved successfully.", "success");
+    } catch (error) {
+      console.error(error);
+      status("formStatus", error.message || "Could not save product.", "error");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function editProduct(id) {
+    const p = products.find(item => String(item.id) === String(id));
+    if (!p) return;
+
+    $("productId").value = p.id;
+    $("productName").value = p.name || "";
+    $("sku").value = p.sku || "";
+    $("category").value = p.category || "Other";
+    $("material").value = p.material || "";
+    $("description").value = p.description || "";
+    $("tag").value = p.tag || "";
+    $("emoji").value = p.emoji || "🏆";
+    $("isActive").checked = !!p.is_active;
+    $("photo").value = "";
+    currentImageUrl = p.image_url || "";
+    $("photoStatus").textContent = currentImageUrl
+      ? "Existing photo will be kept unless you select a new one."
+      : "No existing photo.";
+
+    $("sizesContainer").innerHTML = "";
+    const pv = variants.filter(v => String(v.product_id) === String(p.id));
+    if (pv.length) pv.forEach(addSize);
+    else addSize({
+      size_label: "Standard",
+      original_price: p.price || "",
+      discount_price: p.price || "",
+      stock: p.stock || 0
+    });
+
+    $("formHeading").textContent = "✎ Edit Product";
+    $("saveBtn").textContent = "Update Product";
+    status("formStatus", "");
+    $("productForm").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  async function toggleProduct(id) {
+    const p = products.find(item => String(item.id) === String(id));
+    if (!p) return;
+    const { error } = await db.from("products")
+      .update({ is_active: !p.is_active }).eq("id", p.id);
+    if (error) {
+      status("globalStatus", error.message, "error");
+      return;
+    }
+    await loadProducts();
+    status("globalStatus", "Product visibility updated.", "success");
+  }
+
+  async function deleteProduct(id) {
+    const p = products.find(item => String(item.id) === String(id));
+    if (!p || !confirm(`Delete "${p.name}" permanently?`)) return;
+
+    try {
+      const { error: variantError } = await db.from("product_variants")
+        .delete().eq("product_id", p.id);
+      if (variantError) throw variantError;
+
+      const { error } = await db.from("products").delete().eq("id", p.id);
+      if (error) throw error;
+
+      await loadProducts();
+      status("globalStatus", "Product deleted.", "success");
+    } catch (error) {
+      status("globalStatus", error.message || "Delete failed.", "error");
+    }
+  }
+
+  async function showDashboard() {
+    $("loginSection").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+    try {
+      await loadProducts();
+      status("globalStatus", "Connected. Your products are ready.", "success");
+    } catch (error) {
+      console.error(error);
+      status("globalStatus",
+        "Could not load products: " + error.message +
+        ". Check your database tables and RLS policies.", "error");
+    }
+  }
+
+  async function init() {
+    try {
+      db = getClient();
+      const { data: { session }, error } = await db.auth.getSession();
+      if (error) throw error;
+      if (session) await showDashboard();
+    } catch (error) {
+      status("loginStatus", error.message, "error");
+    }
+  }
+
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const btn = $("loginBtn");
+    btn.disabled = true;
+    status("loginStatus", "Signing in...");
+
+    try {
+      if (!db) db = getClient();
+      const { error } = await db.auth.signInWithPassword({
+        email: $("email").value.trim(),
+        password: $("password").value
+      });
+      if (error) throw error;
+      await showDashboard();
+    } catch (error) {
+      status("loginStatus", error.message || "Login failed.", "error");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("logoutBtn").addEventListener("click", async () => {
+    if (db) await db.auth.signOut();
+    $("dashboard").classList.add("hidden");
+    $("loginSection").classList.remove("hidden");
+    $("password").value = "";
+    status("loginStatus", "You have been logged out.");
+  });
+
+  $("productForm").addEventListener("submit", saveProduct);
+  $("addSizeBtn").addEventListener("click", () => addSize());
+  $("resetBtn").addEventListener("click", resetForm);
+  $("searchProducts").addEventListener("input", renderProducts);
+
+  $("photo").addEventListener("change", () => {
+    const file = $("photo").files[0];
+    $("photoStatus").textContent = file
+      ? `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`
+      : currentImageUrl ? "Existing photo will be kept." : "";
+  });
+
+  resetForm();
+  init();
+})();
 </script>
 </body>
 </html>
