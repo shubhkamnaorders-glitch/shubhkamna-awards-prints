@@ -296,17 +296,65 @@ let PRODUCTS = [
 
 // When Supabase is configured, the live catalogue is loaded from the products table.
 // Until then, the original sample catalogue remains visible.
-async function loadLiveProducts(){
-  if(!window.supabase || !window.SUPABASE_URL || window.SUPABASE_URL.includes("PASTE_") || !window.SUPABASE_ANON_KEY || window.SUPABASE_ANON_KEY.includes("PASTE_")) return;
+async function loadLiveProducts() {
+  if (!window.supabase || !window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) {
+    console.error("Supabase config.js is missing.");
+    return;
+  }
+
   try {
     const client = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-    const {data,error} = await client.from("products").select("id,name,category,material,price,original_price,variants,emoji,image_url,tag,description,stock,is_active").eq("is_active",true).order("created_at",{ascending:false});
-    if(error) throw error;
-    if(data && data.length){
-      PRODUCTS = data.map(p=>({id:p.id,name:p.name,category:p.category,material:p.material||"Mixed",price:Number(p.price),originalPrice:Number(p.original_price||p.price),variants:p.variants||[],emoji:p.emoji||"📦",imageUrl:p.image_url||"",tag:p.tag||p.category,description:p.description||"",stock:Number(p.stock||0)}));
-      renderProducts(); renderCart();
-    } else { PRODUCTS = []; renderProducts(); renderCart(); }
-  } catch(err){ console.error("Could not load live catalogue:",err); }
+    const { data: productsData, error: productsError } = await client
+      .from("products")
+      .select("*")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+    if (productsError) throw productsError;
+
+    const productIds = (productsData || []).map(p => p.id);
+    let variantsData = [];
+    if (productIds.length) {
+      const { data, error } = await client
+        .from("product_variants")
+        .select("*")
+        .in("product_id", productIds);
+      if (error) throw error;
+      variantsData = data || [];
+    }
+
+    PRODUCTS = (productsData || []).map(p => {
+      const productVariants = variantsData
+        .filter(v => String(v.product_id) === String(p.id))
+        .map(v => ({
+          name: v.size_label,
+          originalPrice: Number(v.original_price ?? v.discount_price ?? 0),
+          price: Number(v.discount_price ?? 0),
+          stock: Number(v.stock ?? 0)
+        }));
+
+      return {
+        id: p.id,
+        name: p.name,
+        category: p.category || "Other",
+        material: p.material || "Mixed",
+        price: productVariants.length ? Math.min(...productVariants.map(v => v.price)) : Number(p.price || 0),
+        originalPrice: Number(p.original_price ?? p.price ?? 0),
+        variants: productVariants,
+        emoji: p.emoji || "🏆",
+        imageUrl: p.image_url || "",
+        tag: p.tag || p.category || "",
+        description: p.description || "",
+        stock: Number(p.stock || 0)
+      };
+    });
+
+    renderProducts();
+    renderCart();
+    console.log("Live products loaded:", PRODUCTS.length);
+  } catch (err) {
+    console.error("Could not load live products:", err);
+    toast("Products load nahi hue. Browser console check karein.");
+  }
 }
 
 const state = {category:"All", query:"", minPrice:100, maxPrice:1000, material:"All", cart:{}};
