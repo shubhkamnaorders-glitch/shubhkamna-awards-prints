@@ -4,40 +4,130 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shubhkamna Awards & Prints — Product Studio</title>
+<title>Shubhkamna Awards & Prints — Premium Admin</title>
 <style>
-:root{--navy:#101b31;--gold:#d5ad61;--bg:#f4f6fa;--ink:#17243a;--muted:#718096;--line:#e2e8f0}
+:root{
+--navy:#101735;--navy2:#263d79;--purple:#7046a8;
+--gold:#e9b949;--gold2:#ffe8a3;--bg:#f2efff;
+--ink:#192449;--muted:#66719a;--line:#deddf5;
+}
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(135deg,#fff8e9,#f4f6fa 45%);font:15px/1.5 Arial,sans-serif;color:var(--ink)}
-header{position:sticky;top:0;z-index:5;background:linear-gradient(120deg,#0c172a,#203b61);color:white;padding:16px max(16px,calc((100% - 1100px)/2));display:flex;justify-content:space-between;align-items:center;gap:10px}
-header b{font-size:17px}header a{color:white}
-main{max-width:1100px;margin:25px auto;padding:0 15px 80px}
-.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 12px 35px #15274410}
-.hero{background:linear-gradient(120deg,#101b31,#203b61);color:white}
-.hero p{color:#d7e0ee}
-h1{font-size:25px;margin:0 0 8px}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0}
-label{display:block;font-weight:bold;font-size:12px;margin:12px 0 6px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d5ddea;border-radius:11px;font:inherit;background:#fbfcfe;color:var(--ink)}
-input:focus,select:focus,textarea:focus{outline:2px solid #d5ad6155;border-color:var(--gold)}
+body{
+margin:0;color:var(--ink);font:15px/1.55 Inter,Arial,sans-serif;
+background:
+radial-gradient(ellipse at 5% 0%,#ffe5b7 0,transparent 30%),
+radial-gradient(ellipse at 95% 5%,#dcd3ff 0,transparent 32%),
+linear-gradient(140deg,#f9f5ff,#edf3ff 55%,#fff5e6);
+min-height:100vh
+}
+header{
+position:sticky;top:0;z-index:10;color:#fff;
+background:linear-gradient(115deg,#101735,#263d79 60%,#633b8d);
+padding:15px max(15px,calc((100% - 1100px)/2));
+display:flex;justify-content:space-between;align-items:center;gap:10px;
+border-bottom:2px solid var(--gold);box-shadow:0 8px 30px #151b4530
+}
+header b{font-size:17px;letter-spacing:.2px}
+header a{color:white;text-decoration:none;border:1px solid #ffffff55;border-radius:20px;padding:8px 12px;font-size:13px}
+main{max-width:1100px;margin:25px auto;padding:0 15px 85px}
+.panel{
+background:linear-gradient(145deg,#fff,#f8f6ff);
+border:1px solid var(--line);border-radius:22px;padding:22px;margin-bottom:19px;
+box-shadow:0 15px 40px #28366b15
+}
+#loginPanel{
+max-width:650px;margin:38px auto;padding:clamp(23px,5vw,40px);
+background:radial-gradient(ellipse at top right,#e6dcff 0,transparent 48%),
+linear-gradient(145deg,#fff,#f5f0ff);
+border:1px solid #d7cafa;box-shadow:0 25px 70px #38256825
+}
+.brand-badge,.badge{
+display:inline-block;border-radius:30px;padding:6px 11px;
+background:linear-gradient(110deg,#fff0c1,#f1d17a);color:#65470e;
+border:1px solid #e5c46d;font-size:11px;font-weight:800;letter-spacing:.5px
+}
+#loginPanel h1{
+font-size:clamp(27px,4vw,35px);margin:15px 0 7px;
+background:linear-gradient(100deg,#15234b,#7046a8,#a36a16);
+-webkit-background-clip:text;background-clip:text;color:transparent
+}
+h1{font-size:25px;margin:0 0 8px}
+h2{font-size:19px;margin:0 0 12px;color:#283b78}
+h3{font-size:16px;margin:0}
+label{display:block;font-size:12px;font-weight:800;letter-spacing:.25px;margin:12px 0 6px;color:#344369}
+input,select,textarea{
+width:100%;padding:12px 13px;border:1px solid #d5d8ef;border-radius:12px;
+font:inherit;color:var(--ink);background:linear-gradient(135deg,#fff,#f8f8ff);
+transition:.2s
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#8762d5;box-shadow:0 0 0 4px #8762d525}
+input[type=checkbox],input[type=file]{accent-color:#7046a8}
 textarea{min-height:90px;resize:vertical}
-button{border:0;border-radius:11px;padding:11px 15px;background:#142b47;color:white;font-weight:bold;cursor:pointer}
-button.secondary{background:#edf1f7;color:#26364f}
-button.danger{background:#a93442}
+button{
+border:1px solid #7460b3;border-radius:12px;padding:11px 15px;
+background:linear-gradient(115deg,#17264d,#4c3c91 65%,#7651b9);
+color:white;font-weight:800;cursor:pointer;
+box-shadow:0 6px 16px #48347c25;transition:transform .18s,box-shadow .18s
+}
+button:hover{transform:translateY(-2px);box-shadow:0 9px 24px #48347c40}
+button.secondary{background:linear-gradient(120deg,#edf0ff,#e7e1ff);color:#303d78;border-color:#d5d0f4;box-shadow:none}
+button.danger{background:linear-gradient(120deg,#a92348,#d94c68);color:white;border:0}
+#addSizeBtn{background:linear-gradient(110deg,#e9b949,#ffe7a1);color:#33234d;border-color:#d8a63e}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.actions button{min-height:43px}
 .muted{font-size:13px;color:var(--muted)}
-.status{white-space:pre-wrap;background:#f0f4f9;border:1px solid #e3e9f2;padding:12px;border-radius:11px;margin-top:13px;font-size:13px}
+.status{
+white-space:pre-wrap;background:linear-gradient(110deg,#f0f0ff,#fff8e9);
+border:1px solid #dddaf5;padding:12px;border-radius:12px;margin-top:13px;font-size:13px
+}
 .hidden{display:none!important}
-.size-card{padding:15px;border:1px solid #e7dfce;border-radius:15px;margin:13px 0;background:#fffdf8}
-.size-head,.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.size-no{display:inline-grid;place-items:center;background:#f7edda;color:#8b6827;border-radius:8px;width:28px;height:28px;margin-right:7px}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
-.item{border:1px solid var(--line);padding:13px;border-radius:15px;overflow-wrap:anywhere}
-.item img{width:100%;height:150px;object-fit:contain;background:#f7f8fb;border-radius:10px}
+.hero{
+background:linear-gradient(120deg,#101735,#263d79 58%,#663c91);
+color:#fff;border:1px solid #d9b65c;box-shadow:0 18px 40px #24285b35
+}
+.hero h1{color:white}
+.hero p{color:#e0e5f7}
+.hero .status{background:#ffffff13;border-color:#ffffff35;color:#fff}
+.topline,.size-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.size-card{
+padding:17px;border:1px solid #e4ce91;border-radius:18px;margin:14px 0;
+background:linear-gradient(135deg,#fff9e9,#f4efff);
+box-shadow:0 8px 22px #604a9210
+}
+.size-no{
+display:inline-grid;place-items:center;width:29px;height:29px;margin-right:7px;
+border-radius:9px;background:linear-gradient(135deg,#f9df92,#e9b949);
+color:#33234d;font-weight:900
+}
+.discount-hint{padding:10px 12px;background:#eee9ff;border-radius:10px;color:#543b91}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.item{
+min-width:0;overflow-wrap:anywhere;padding:13px;border-radius:18px;
+border:1px solid #dedcf5;background:linear-gradient(145deg,#fff,#f7f5ff);
+box-shadow:0 8px 22px #27366a0c
+}
+.item img{
+width:100%;height:155px;object-fit:contain;border-radius:13px;
+background:linear-gradient(135deg,#fff2d3,#eeeaff);border:1px solid #f0e5c8
+}
+.item h3{margin:10px 0 6px;color:#263b78}
 .item p{font-size:13px;color:var(--muted);margin:5px 0}
-.badge{display:inline-block;background:#f8f0df;color:#8b6827;border-radius:30px;padding:5px 10px;font-size:11px;font-weight:bold}
-@media(max-width:650px){main{padding:0 10px 90px;margin:13px auto}.panel{padding:15px;border-radius:16px}.row,.three{grid-template-columns:1fr}header{padding:12px}header b{font-size:14px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.item{padding:8px}.item img{height:105px}.actions button{flex:1}input,select,textarea{font-size:16px}}
+#formTitle{color:#493a8d}
+hr{border:0;border-top:1px solid #e3dff5}
+@media(max-width:650px){
+header{padding:12px 13px}header b{font-size:14px}
+main{padding:0 10px 95px;margin:13px auto}
+.panel{padding:15px;border-radius:17px}
+#loginPanel{margin:20px auto;padding:22px 18px}
+.row,.three{grid-template-columns:1fr}
+.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.item{padding:9px;border-radius:14px}.item img{height:110px}
+.actions button{flex:1}
+.size-card{padding:13px}
+input,select,textarea{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -46,14 +136,16 @@ button.danger{background:#a93442}
 <a href="./">View Store ↗</a>
 </header>
 <main>
-<section id="loginPanel" class="panel" style="max-width:650px;margin:35px auto">
-<span class="badge">SECURE ADMIN ACCESS</span>
-<h1 style="margin-top:14px">Admin Login</h1>
-<p class="muted">Sign in with your authorized Supabase account.</p>
+<section id="loginPanel" class="panel">
+<span class="brand-badge">✦ SHUBHKAMNA • ADMIN ACCESS</span>
+<h1>Welcome Back!</h1>
+<p class="muted">Sign in to manage your products, pricing and stock.</p>
 <form id="loginForm">
-<label>Email</label><input id="email" type="email" autocomplete="username" required>
-<label>Password</label><input id="password" type="password" autocomplete="current-password" required>
-<div class="actions"><button type="submit">Sign in to dashboard</button></div>
+<label>Email Address</label>
+<input id="email" type="email" autocomplete="username" required>
+<label>Password</label>
+<input id="password" type="password" autocomplete="current-password" required>
+<div class="actions"><button type="submit">✦ Sign in to dashboard</button></div>
 </form>
 <div id="loginStatus" class="status">Connecting…</div>
 </section>
@@ -61,9 +153,10 @@ button.danger{background:#a93442}
 <section id="dashboard" class="hidden">
 <div class="panel hero">
 <div class="topline">
-<div><span class="badge">PRODUCT STUDIO</span><h1 style="margin-top:10px">Product Manager</h1>
-<p>Product details, photos, sizes, discount pricing and stock.</p></div>
-<button id="logoutBtn" class="secondary">Log out</button>
+<div><span class="badge">✦ PRODUCT STUDIO</span>
+<h1 style="margin-top:12px">Product Manager</h1>
+<p>Manage photos, sizes, original prices, discounts and stock.</p></div>
+<button id="logoutBtn" class="secondary">Log out ↗</button>
 </div>
 <div id="status" class="status">Connected.</div>
 </div>
@@ -77,174 +170,151 @@ button.danger{background:#a93442}
 <div><label>Product ID / SKU</label><input id="sku" maxlength="60" placeholder="SWT-001"><p class="muted">Leave blank to use the database ID.</p></div>
 </div>
 <div class="row">
-<div><label>Category *</label>
-<select id="category" required>
+<div><label>Category *</label><select id="category" required>
 <option>Trophies & Awards</option><option>Medals & Mementos</option><option>Printing</option><option>Stationery</option><option>Custom Orders</option>
 </select></div>
 <div><label>Material</label><input id="material" maxlength="120" placeholder="Metal, acrylic, wood, crystal..."></div>
 </div>
 <div class="row">
 <div><label>Product photo</label><input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
-<p class="muted">JPG, PNG or WebP; maximum 5 MB.</p><img id="preview" class="hidden" alt="Preview" style="max-width:190px;max-height:150px;object-fit:contain"></div>
+<p class="muted">JPG, PNG or WebP; maximum 5 MB.</p>
+<img id="preview" class="hidden" alt="Preview" style="max-width:190px;max-height:150px;object-fit:contain;border-radius:12px"></div>
 <div><label>Description / customization details</label><textarea id="description" maxlength="1000" placeholder="Name printing, logo, finish, packing..."></textarea>
 <label>Tag</label><input id="tag" maxlength="40" placeholder="Popular / New">
 <p><label style="display:flex;align-items:center;gap:8px"><input id="active" type="checkbox" checked style="width:auto"> Show on public website</label></p></div>
 </div>
-<hr style="border:0;border-top:1px solid #e2e8f0;margin:22px 0">
+<hr style="margin:22px 0">
 <div class="topline">
-<div><h2>Size & Pricing</h2><p class="muted">Every size has its own MRP, discounted price and stock.</p></div>
+<div><h2>Size & Pricing</h2><p class="muted">Each size has its own original price, discounted price and stock.</p></div>
 <button id="addSizeBtn" type="button">＋ Add size</button>
 </div>
 <div id="sizes"></div>
-<div class="actions"><button type="submit">Save product</button><button id="resetBtn" class="secondary" type="button">Clear form</button></div>
+<div class="actions"><button type="submit">💾 Save product</button><button id="resetBtn" class="secondary" type="button">Clear form</button></div>
 </form>
 </div>
 
 <div class="panel">
-<div class="topline"><h2>Current products</h2><button id="refreshBtn" class="secondary">Refresh</button></div>
+<div class="topline"><h2>Current products</h2><button id="refreshBtn" class="secondary">↻ Refresh</button></div>
 <div id="products" class="products"></div>
 </div>
 </section>
 </main>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 let db=null,currentUser=null,items=[],photoUrl="",variantCache={};
-
 function say(msg,where="status"){const el=$(where);if(el)el.textContent=msg}
 function configured(){return !!(window.SUPABASE_URL&&window.SUPABASE_ANON_KEY&&!window.SUPABASE_URL.includes("PASTE_")&&!window.SUPABASE_ANON_KEY.includes("PASTE_"))}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function showDashboard(){$("loginPanel").classList.add("hidden");$("dashboard").classList.remove("hidden")}
-
 function addSize(v={}){
- const n=$("sizes").children.length+1,d=document.createElement("div");
- d.className="size-card";
- d.innerHTML=`<div class="size-head"><h3><span class="size-no">${n}</span> Size option</h3><button type="button" class="danger remove-size">Remove</button></div>
- <div class="row three">
- <div><label>Size label *</label><input class="size-label" required maxlength="80" placeholder="4 inch / Small" value="${esc(v.size_label||"")}"></div>
- <div><label>Original price (₹) *</label><input class="original-price" type="number" min="0" step=".01" required placeholder="500" value="${v.original_price??""}"></div>
- <div><label>Discount price (₹) *</label><input class="discount-price" type="number" min="0" step=".01" required placeholder="399" value="${v.discount_price??""}"></div>
- </div><div class="row"><div><label>Stock quantity *</label><input class="size-stock" type="number" min="0" step="1" required value="${v.stock??0}"></div>
- <div><p class="muted discount-hint">Discount percentage will appear here.</p></div></div>`;
- d.querySelector(".remove-size").onclick=()=>{if($("sizes").children.length===1){say("At least one size is required.");return}d.remove();renumberSizes()};
- d.querySelectorAll(".original-price,.discount-price").forEach(x=>x.addEventListener("input",()=>{
- const a=Number(d.querySelector(".original-price").value),b=Number(d.querySelector(".discount-price").value);
- d.querySelector(".discount-hint").textContent=(a>0&&b>=0&&b<=a)?`Discount: ${Math.round((a-b)/a*100)}%`:"Discount price must not exceed original price.";
- }));
- $("sizes").appendChild(d);renumberSizes();
+const n=$("sizes").children.length+1,d=document.createElement("div");d.className="size-card";
+d.innerHTML=`<div class="size-head"><h3><span class="size-no">${n}</span> Size option</h3><button type="button" class="danger remove-size">Remove</button></div>
+<div class="row three">
+<div><label>Size label *</label><input class="size-label" required maxlength="80" placeholder="4 inch / Small" value="${esc(v.size_label||"")}"></div>
+<div><label>Original price (₹) *</label><input class="original-price" type="number" min="0" step=".01" required placeholder="500" value="${v.original_price??""}"></div>
+<div><label>Discount price (₹) *</label><input class="discount-price" type="number" min="0" step=".01" required placeholder="399" value="${v.discount_price??""}"></div>
+</div>
+<div class="row"><div><label>Stock quantity *</label><input class="size-stock" type="number" min="0" step="1" required value="${v.stock??0}"></div>
+<div><p class="muted discount-hint">Enter prices to calculate discount.</p></div></div>`;
+d.querySelector(".remove-size").onclick=()=>{if($("sizes").children.length===1){say("At least one size is required.");return}d.remove();renumberSizes()};
+d.querySelectorAll(".original-price,.discount-price").forEach(x=>x.addEventListener("input",()=>{
+const a=Number(d.querySelector(".original-price").value),b=Number(d.querySelector(".discount-price").value);
+d.querySelector(".discount-hint").textContent=(a>0&&b>=0&&b<=a)?`Discount: ${Math.round((a-b)/a*100)}%`:"Discount price must not exceed original price.";
+}));
+$("sizes").appendChild(d);renumberSizes();
 }
 function renumberSizes(){[...$("sizes").children].forEach((e,i)=>e.querySelector(".size-no").textContent=i+1)}
 function readSizes(){return [...$("sizes").querySelectorAll(".size-card")].map(c=>({size_label:c.querySelector(".size-label").value.trim(),original_price:Number(c.querySelector(".original-price").value),discount_price:Number(c.querySelector(".discount-price").value),stock:Number(c.querySelector(".size-stock").value)}))}
-
 async function init(){
- if(!configured()){say("Check config.js: project URL and publishable key are required.","loginStatus");return}
- db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
- const {data}=await db.auth.getSession();
- if(data.session){currentUser=data.session.user;showDashboard();await loadProducts()}
- else say("Ready. Sign in with your Supabase admin account.","loginStatus");
+if(!configured()){say("Check config.js: project URL and publishable key are required.","loginStatus");return}
+db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
+const {data}=await db.auth.getSession();
+if(data.session){currentUser=data.session.user;showDashboard();await loadProducts()}
+else say("Ready. Sign in with your Supabase admin account.","loginStatus");
 }
 $("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();
- if(!configured()){say("Check config.js first.","loginStatus");return}
- if(!db)db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
- say("Signing in…","loginStatus");
- const {data,error}=await db.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
- if(error){say(error.message,"loginStatus");return}
- currentUser=data.user;showDashboard();await loadProducts();
+e.preventDefault();if(!configured()){say("Check config.js first.","loginStatus");return}
+if(!db)db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
+say("Signing in…","loginStatus");
+const {data,error}=await db.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
+if(error){say(error.message,"loginStatus");return}
+currentUser=data.user;showDashboard();await loadProducts();
 });
 $("logoutBtn").onclick=async()=>{await db.auth.signOut();currentUser=null;$("dashboard").classList.add("hidden");$("loginPanel").classList.remove("hidden");say("Logged out.","loginStatus")};
 $("addSizeBtn").onclick=()=>addSize();
 $("resetBtn").onclick=resetForm;
 $("refreshBtn").onclick=loadProducts;
-
 $("photo").addEventListener("change",()=>{
- const f=$("photo").files[0];if(!f)return;
- if(f.size>5*1024*1024||!["image/jpeg","image/png","image/webp"].includes(f.type)){say("Use JPG, PNG or WebP up to 5 MB.");$("photo").value="";return}
- $("preview").src=URL.createObjectURL(f);$("preview").classList.remove("hidden");
+const f=$("photo").files[0];if(!f)return;
+if(f.size>5*1024*1024||!["image/jpeg","image/png","image/webp"].includes(f.type)){say("Use JPG, PNG or WebP up to 5 MB.");$("photo").value="";return}
+$("preview").src=URL.createObjectURL(f);$("preview").classList.remove("hidden");
 });
-
 async function uploadPhoto(file){
- const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
- const path=`${currentUser.id}/${crypto.randomUUID()}.${ext}`;
- const {error}=await db.storage.from("product-images").upload(path,file,{upsert:false,contentType:file.type});
- if(error)throw error;
- return db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+const path=`${currentUser.id}/${crypto.randomUUID()}.${ext}`;
+const {error}=await db.storage.from("product-images").upload(path,file,{upsert:false,contentType:file.type});
+if(error)throw error;
+return db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
 }
 async function loadProducts(){
- say("Loading products…");
- const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
- if(error){say("Could not load products: "+error.message);return}
- items=data||[];variantCache={};
- for(const p of items){
-  const r=await db.from("product_variants").select("*").eq("product_id",p.id).order("id");
-  if(r.error){say("Variant loading error: "+r.error.message);return}
-  variantCache[p.id]=r.data||[];
- }
- renderList();say(items.length+" product(s) loaded.");
+say("Loading products…");
+const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
+if(error){say("Could not load products: "+error.message);return}
+items=data||[];variantCache={};
+for(const p of items){
+const r=await db.from("product_variants").select("*").eq("product_id",p.id).order("id");
+if(r.error){say("Variant loading error: "+r.error.message);return}
+variantCache[p.id]=r.data||[];
+}
+renderList();say(items.length+" product(s) loaded.");
 }
 function renderList(){
- $("products").innerHTML=items.length?items.map(p=>{
- const vs=variantCache[p.id]||[];
- const priceText=vs.length?vs.map(v=>`${esc(v.size_label)}: ₹${Number(v.discount_price).toLocaleString("en-IN")} (MRP ₹${Number(v.original_price).toLocaleString("en-IN")}, stock ${v.stock})`).join("<br>"):`Base price ₹${Number(p.price).toLocaleString("en-IN")}`;
- return `<article class="item"><img src="${esc(p.image_url||"")}" alt="" onerror="this.style.display='none'"><h3>${esc(p.name)}</h3><p><b>ID:</b> ${esc(p.sku||p.id)} · ${esc(p.category)}</p><p><b>Material:</b> ${esc(p.material||"—")}</p><p>${priceText}</p><p>${p.is_active?"Visible on store":"Hidden from store"}</p><p>${esc(p.description||"")}</p><div class="actions"><button class="secondary" data-edit="${p.id}">Edit</button><button class="secondary" data-toggle="${p.id}">${p.is_active?"Hide":"Show"}</button><button class="danger" data-delete="${p.id}">Delete</button></div></article>`;
- }).join(""):'<p class="muted">No products yet. Add your first product above.</p>';
+$("products").innerHTML=items.length?items.map(p=>{
+const vs=variantCache[p.id]||[];
+const priceText=vs.length?vs.map(v=>`${esc(v.size_label)}: ₹${Number(v.discount_price).toLocaleString("en-IN")} (MRP ₹${Number(v.original_price).toLocaleString("en-IN")}, stock ${v.stock})`).join("<br>"):`Base price ₹${Number(p.price).toLocaleString("en-IN")}`;
+return `<article class="item"><img src="${esc(p.image_url||"")}" alt="" onerror="this.style.display='none'"><h3>${esc(p.name)}</h3><p><b>ID:</b> ${esc(p.sku||p.id)} · ${esc(p.category)}</p><p><b>Material:</b> ${esc(p.material||"—")}</p><p>${priceText}</p><p>${p.is_active?"Visible on store":"Hidden from store"}</p><p>${esc(p.description||"")}</p><div class="actions"><button class="secondary" data-edit="${p.id}">Edit</button><button class="secondary" data-toggle="${p.id}">${p.is_active?"Hide":"Show"}</button><button class="danger" data-delete="${p.id}">Delete</button></div></article>`;
+}).join(""):'<p class="muted">No products yet. Add your first product above.</p>';
 }
 function resetForm(){
- $("productForm").reset();$("productId").value="";$("sizes").innerHTML="";
- addSize();$("active").checked=true;photoUrl="";$("preview").classList.add("hidden");
- $("formTitle").textContent="＋ Add a product";
+$("productForm").reset();$("productId").value="";$("sizes").innerHTML="";addSize();
+$("active").checked=true;photoUrl="";$("preview").classList.add("hidden");$("formTitle").textContent="＋ Add a product";
 }
 $("productForm").addEventListener("submit",async e=>{
- e.preventDefault();
- try{
-  const sizes=readSizes();
-  if(!sizes.length||sizes.some(v=>!v.size_label||v.original_price<0||v.discount_price<0||v.discount_price>v.original_price||v.stock<0)){
-   say("Check each size: discount price cannot exceed original price.");return;
-  }
-  say("Saving product…");
-  const f=$("photo").files[0];if(f)photoUrl=await uploadPhoto(f);
-  const existingId=$("productId").value,base=sizes[0];
-  const row={name:$("name").value.trim(),sku:$("sku").value.trim()||null,category:$("category").value,material:$("material").value.trim(),price:base.discount_price,stock:sizes.reduce((a,v)=>a+v.stock,0),tag:$("tag").value.trim()||$("category").value,emoji:"📦",description:$("description").value.trim(),image_url:photoUrl,is_active:$("active").checked};
-  let productId=existingId;
-  if(existingId){
-   const {error}=await db.from("products").update(row).eq("id",existingId);if(error)throw error;
-  }else{
-   const {data,error}=await db.from("products").insert(row).select("id").single();if(error)throw error;productId=data.id;
-  }
-  const {error:delError}=await db.from("product_variants").delete().eq("product_id",productId);if(delError)throw delError;
-  const variantRows=sizes.map(v=>({...v,product_id:productId}));
-  const {error:varError}=await db.from("product_variants").insert(variantRows);if(varError)throw varError;
-  resetForm();await loadProducts();say("Product and sizes saved successfully.");
- }catch(err){say("Could not save product: "+err.message)}
+e.preventDefault();
+try{
+const sizes=readSizes();
+if(!sizes.length||sizes.some(v=>!v.size_label||v.original_price<0||v.discount_price<0||v.discount_price>v.original_price||v.stock<0)){say("Check each size: discount price cannot exceed original price.");return}
+say("Saving product…");
+const f=$("photo").files[0];if(f)photoUrl=await uploadPhoto(f);
+const existingId=$("productId").value,base=sizes[0];
+const row={name:$("name").value.trim(),sku:$("sku").value.trim()||null,category:$("category").value,material:$("material").value.trim(),price:base.discount_price,stock:sizes.reduce((a,v)=>a+v.stock,0),tag:$("tag").value.trim()||$("category").value,emoji:"📦",description:$("description").value.trim(),image_url:photoUrl,is_active:$("active").checked};
+let productId=existingId;
+if(existingId){const {error}=await db.from("products").update(row).eq("id",existingId);if(error)throw error}
+else{const {data,error}=await db.from("products").insert(row).select("id").single();if(error)throw error;productId=data.id}
+const {error:delError}=await db.from("product_variants").delete().eq("product_id",productId);if(delError)throw delError;
+const variantRows=sizes.map(v=>({...v,product_id:productId}));
+const {error:varError}=await db.from("product_variants").insert(variantRows);if(varError)throw varError;
+resetForm();await loadProducts();say("Product and sizes saved successfully.");
+}catch(err){say("Could not save product: "+err.message)}
 });
 $("products").addEventListener("click",async e=>{
- const edit=e.target.closest("[data-edit]"),toggle=e.target.closest("[data-toggle]"),del=e.target.closest("[data-delete]");
- try{
-  if(edit){
-   const p=items.find(x=>String(x.id)===edit.dataset.edit);if(!p)return;
-   $("productId").value=p.id;$("name").value=p.name;$("sku").value=p.sku||"";
-   $("category").value=p.category;$("material").value=p.material||"";$("tag").value=p.tag||"";
-   $("description").value=p.description||"";$("active").checked=p.is_active;photoUrl=p.image_url||"";
-   if(photoUrl){$("preview").src=photoUrl;$("preview").classList.remove("hidden")}else $("preview").classList.add("hidden");
-   $("sizes").innerHTML="";
-   const vs=variantCache[p.id]||[];
-   if(vs.length)vs.forEach(v=>addSize(v));else addSize({size_label:"Default",original_price:p.price,discount_price:p.price,stock:p.stock});
-   $("formTitle").textContent="Edit product";window.scrollTo({top:0,behavior:"smooth"});
-  }
-  if(toggle){
-   const p=items.find(x=>String(x.id)===toggle.dataset.toggle);
-   const {error}=await db.from("products").update({is_active:!p.is_active}).eq("id",p.id);
-   if(error)throw error;await loadProducts();
-  }
-  if(del){
-   const p=items.find(x=>String(x.id)===del.dataset.delete);
-   if(!confirm(`Delete "${p.name}"? This cannot be undone.`))return;
-   const {error}=await db.from("products").delete().eq("id",p.id);
-   if(error)throw error;await loadProducts();
-  }
- }catch(err){say("Action failed: "+err.message)}
+const edit=e.target.closest("[data-edit]"),toggle=e.target.closest("[data-toggle]"),del=e.target.closest("[data-delete]");
+try{
+if(edit){
+const p=items.find(x=>String(x.id)===edit.dataset.edit);if(!p)return;
+$("productId").value=p.id;$("name").value=p.name;$("sku").value=p.sku||"";
+$("category").value=p.category;$("material").value=p.material||"";$("tag").value=p.tag||"";
+$("description").value=p.description||"";$("active").checked=p.is_active;photoUrl=p.image_url||"";
+if(photoUrl){$("preview").src=photoUrl;$("preview").classList.remove("hidden")}else $("preview").classList.add("hidden");
+$("sizes").innerHTML="";const vs=variantCache[p.id]||[];
+if(vs.length)vs.forEach(v=>addSize(v));else addSize({size_label:"Default",original_price:p.price,discount_price:p.price,stock:p.stock});
+$("formTitle").textContent="Edit product";window.scrollTo({top:0,behavior:"smooth"});
+}
+if(toggle){const p=items.find(x=>String(x.id)===toggle.dataset.toggle);const {error}=await db.from("products").update({is_active:!p.is_active}).eq("id",p.id);if(error)throw error;await loadProducts()}
+if(del){const p=items.find(x=>String(x.id)===del.dataset.delete);if(!confirm(`Delete "${p.name}"? This cannot be undone.`))return;const {error}=await db.from("products").delete().eq("id",p.id);if(error)throw error;await loadProducts()}
+}catch(err){say("Action failed: "+err.message)}
 });
 resetForm();init();
 </script>
