@@ -121,7 +121,38 @@
 
     @media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.brand{min-width:auto}.brandname{font-size:14px}.hero-inner{grid-template-columns:1fr .7fr}.photo{height:135px}}
     @media(max-width:620px){.topline{font-size:11px}.head{padding:11px 12px;gap:9px;flex-wrap:wrap}.brand{flex:1}.brandmark{height:38px;width:38px}.brandname{font-size:13px}.brandname small{font-size:9px}.search{order:3;flex-basis:100%}.search input{padding:11px}.cartbtn{padding:10px}.hero-inner{grid-template-columns:1fr;padding:32px 18px}.hero-art{display:none}h1{font-size:34px}.benefits{grid-template-columns:1fr;padding:12px}.benefit{padding:10px}main{padding:22px 12px 40px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.filterbar{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}.filter-actions{grid-column:1/-1}.photo{height:120px;font-size:43px}.product-body{padding:10px}.product h3{font-size:14px}.desc{font-size:11px}.price{font-size:17px}.section-head{align-items:start;flex-direction:column}.sort{width:100%}.custom{padding:17px;align-items:start;flex-direction:column}.custom .outline{width:100%;text-align:center}.cartbtn{font-size:12px}.foot{display:block}}
-  </style>
+  
+    /* Mobile app-like bottom navigation */
+    .mobile-bottom-nav{display:none}
+    @media(max-width:620px){
+      body{padding-bottom:78px}
+      .topline{font-size:10px;padding:6px}
+      header{position:sticky;top:0;z-index:40}
+      .head{gap:8px;padding:10px 12px;flex-wrap:wrap}
+      .brandname{font-size:13px}.brandname small{font-size:9px}
+      .search{order:3;flex:1 0 100%;width:100%}
+      .search input{min-width:0}
+      header nav{display:flex;overflow-x:auto;gap:7px;padding:8px 12px;scrollbar-width:none}
+      header nav::-webkit-scrollbar{display:none}
+      header nav button{white-space:nowrap;flex:0 0 auto}
+      .hero{padding:18px 12px}
+      .hero-inner{grid-template-columns:1fr;gap:12px}
+      .hero-art{display:none}
+      main{padding:12px}
+      .filterbar{display:none;grid-template-columns:1fr 1fr;position:fixed;left:10px;right:10px;bottom:74px;z-index:80;max-height:65vh;overflow:auto;margin:0;padding:14px;box-shadow:0 10px 35px #14233b30}
+      .filterbar.mobile-open{display:grid}
+      .filter-actions{grid-column:1/-1}
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .product .photo{height:135px}
+      .product-body{padding:10px;gap:7px}
+      .product h3{font-size:13px;min-height:0}
+      .mobile-bottom-nav{position:fixed;display:grid;grid-template-columns:repeat(4,1fr);left:0;right:0;bottom:0;z-index:100;background:#fff;border-top:1px solid #dfe3e9;box-shadow:0 -4px 18px #14233b12;padding:7px 4px calc(7px + env(safe-area-inset-bottom));}
+      .mobile-bottom-nav button{border:0;background:transparent;color:#39465a;font-size:10px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px}
+      .mobile-bottom-nav button span{font-size:19px;line-height:1.1}
+      .mobile-bottom-nav button:active,.mobile-bottom-nav button.active{color:#a57a1b}
+      footer{padding-bottom:22px}
+    }
+</style>
 </head>
 <body>
   <div class="topline">Trophies • Printing • Stationery — Easy ordering on WhatsApp</div>
@@ -384,5 +415,29 @@ $("footerPhone").textContent=validWhatsApp()?"+"+WHATSAPP_NUMBER:"Add your numbe
 renderProducts();renderCart();
 loadLiveProducts();
 </script>
+
+  <nav class="mobile-bottom-nav" aria-label="Quick navigation">
+    <button type="button" id="mobileHome"><span>⌂</span>Home</button>
+    <button type="button" id="mobileCategories"><span>▦</span>Categories</button>
+    <button type="button" id="mobileFilters" aria-expanded="false"><span>☷</span>Filters</button>
+    <button type="button" id="mobileCart"><span>🛒</span>Cart <b id="mobileCartCount">0</b></button>
+  </nav>
+  <script>
+    (function(){
+      const filters=document.querySelector('.filterbar');
+      const filterBtn=document.getElementById('mobileFilters');
+      if(filterBtn && filters){filterBtn.addEventListener('click',()=>{filters.classList.toggle('mobile-open');filterBtn.setAttribute('aria-expanded',filters.classList.contains('mobile-open')?'true':'false');});}
+      const catBtn=document.getElementById('mobileCategories');
+      if(catBtn)catBtn.addEventListener('click',()=>{document.getElementById('categoryNav')?.scrollIntoView({behavior:'smooth',block:'start'});});
+      const homeBtn=document.getElementById('mobileHome');
+      if(homeBtn)homeBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+      const cartBtn=document.getElementById('mobileCart');
+      if(cartBtn)cartBtn.addEventListener('click',()=>document.getElementById('openCart')?.click());
+      const count=document.getElementById('cartCount'), mobileCount=document.getElementById('mobileCartCount');
+      if(count&&mobileCount){new MutationObserver(()=>mobileCount.textContent=count.textContent).observe(count,{childList:true,characterData:true,subtree:true});mobileCount.textContent=count.textContent;}
+      document.addEventListener('click',(e)=>{if(filters&&filters.classList.contains('mobile-open')&&!filters.contains(e.target)&&!filterBtn.contains(e.target)){filters.classList.remove('mobile-open');filterBtn.setAttribute('aria-expanded','false');}});
+    })();
+  </script>
+
 </body>
 </html>
