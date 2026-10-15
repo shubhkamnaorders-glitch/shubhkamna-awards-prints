@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#14233b">
   <title>SUBHAKAMNA Awards & Prints | Trophies, Printing & Stationery</title>
-  <meta name="description" content="Shop trophies, awards, printing services and stationery from SUBHAKAMNA Awards & Prints. Order easily on WhatsApp.">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
+  <meta name="description" content="SUBHAKAMNA Awards & Prints — trophies, medals, customized gifts and quality printing, made special for every achievement.">
   <style>
     :root{--navy:#14233b;--navy2:#203653;--gold:#e8c777;--cream:#fbfaf7;--ink:#202a37;--muted:#697586;--line:#e7e9ee;--green:#16834a;--white:#fff}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
@@ -57,7 +55,7 @@
     .outline{background:white;border:1px solid var(--navy);color:var(--navy);font-weight:800;border-radius:8px;padding:12px 15px;text-decoration:none;white-space:nowrap}
     footer{background:#0d1829;color:#e6ebf2;padding:30px 18px}
     .foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-    .foot p{font-size:13px;color:#aeb8c7;line-height:1.5;margin:7px 0}.foot a{color:#e8c777}.footer-extra{max-width:1180px;margin:20px auto 0;padding-top:18px;border-top:1px solid #ffffff24;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.footer-extra img{max-width:180px;max-height:180px;object-fit:contain;background:#fff;padding:8px;border-radius:10px}.policy-text{white-space:pre-wrap;font-size:13px;color:#aeb8c7;line-height:1.6}.brandmark img{width:100%;height:100%;object-fit:contain;border-radius:10px}
+    .foot p{font-size:13px;color:#aeb8c7;line-height:1.5;margin:7px 0}
     .cart-overlay{position:fixed;inset:0;background:#07101d88;z-index:30;display:none}
     .cart-overlay.open{display:block}.cart-panel{position:absolute;right:0;top:0;height:100%;width:min(440px,100%);background:white;display:flex;flex-direction:column;box-shadow:-8px 0 30px #0002}
     .cart-head{padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
@@ -73,116 +71,102 @@
     .checkout{background:#16834a;color:white;border:0;border-radius:8px;padding:13px;font-weight:800}
     .note{font-size:11px;color:var(--muted);line-height:1.45}
     .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17243a;color:white;padding:11px 16px;border-radius:9px;z-index:50;box-shadow:0 5px 20px #0002;display:none;font-size:13px}
-
-    /* Premium visual layer */
-    body{background:#f7f5f0}
-    .topline{background:#0a1220;color:#e8d5a0;letter-spacing:.7px}
-    header{background:linear-gradient(110deg,#101b2e,#1a2c47)}
-    .brandmark{background:linear-gradient(145deg,#f6df9a,#b88b36);color:#14233b;border:1px solid #fff0bf;box-shadow:0 4px 15px #0003}
-    .brandname{letter-spacing:.8px}
-    .brandname small{letter-spacing:2.6px}
-    .search{box-shadow:0 4px 16px #0002}
-    .search button{background:linear-gradient(135deg,#f4dc99,#c59a47)}
-    nav button{border-color:#c6a75b50}
-    .hero{background:radial-gradient(ellipse at 82% 10%,#3a5271 0%,transparent 34%),linear-gradient(120deg,#0d1728,#1b304b 68%,#243e59);position:relative}
-    .hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 48%,#e8c7770a 48.2%,transparent 49%)}
-    .hero-inner{position:relative;z-index:1;min-height:310px}
-    .hero h1{letter-spacing:-1.2px}
-    .hero .cta{box-shadow:0 6px 18px #0002;background:linear-gradient(135deg,#f7e3a8,#d4ad5b)}
-    .art-card{background:linear-gradient(145deg,#ffffff18,#ffffff08);border-color:#d7bc7655;box-shadow:inset 0 1px #ffffff18,0 8px 25px #0001}
-    .benefit{box-shadow:0 3px 12px #14233b06}
-    h2{letter-spacing:-.4px}
-    .product{box-shadow:0 4px 18px #14233b08;border-color:#e5dfd2}
-    .photo{background:radial-gradient(circle at 50% 30%,#fff,#f0eadc 75%);border-bottom:1px solid #ece6d9}
-    .tag{border:1px solid #e9dfc5;background:#fffdf8;color:#705621}
-    .category{color:#92712d}
-    .add{background:linear-gradient(135deg,#f5dfa0,#d6b05a);box-shadow:0 2px 5px #b58a2a18}
-    .add:hover{background:linear-gradient(135deg,#f8e8b7,#e0bd6a)}
-    .custom{background:linear-gradient(120deg,#fff,#faf6eb);border-color:#e8ddc3;box-shadow:0 7px 24px #14233b06}
-    footer{background:linear-gradient(120deg,#0b1423,#172943)}
-
     @media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.brand{min-width:auto}.brandname{font-size:14px}.hero-inner{grid-template-columns:1fr .7fr}.photo{height:135px}}
-    @media(max-width:620px){.footer-extra{grid-template-columns:1fr}.topline{font-size:11px}.head{padding:11px 12px;gap:9px;flex-wrap:wrap}.brand{flex:1}.brandmark{height:38px;width:38px}.brandname{font-size:13px}.brandname small{font-size:9px}.search{order:3;flex-basis:100%}.search input{padding:11px}.cartbtn{padding:10px}.hero-inner{grid-template-columns:1fr;padding:32px 18px}.hero-art{display:none}h1{font-size:34px}.benefits{grid-template-columns:1fr;padding:12px}.benefit{padding:10px}main{padding:22px 12px 40px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:120px;font-size:43px}.product-body{padding:10px}.product h3{font-size:14px}.desc{font-size:11px}.price{font-size:17px}.section-head{align-items:start;flex-direction:column}.sort{width:100%}.custom{padding:17px;align-items:start;flex-direction:column}.custom .outline{width:100%;text-align:center}.cartbtn{font-size:12px}.foot{display:block}}
+    @media(max-width:620px){.topline{font-size:11px}.head{padding:11px 12px;gap:9px;flex-wrap:wrap}.brand{flex:1}.brandmark{height:38px;width:38px}.brandname{font-size:13px}.brandname small{font-size:9px}.search{order:3;flex-basis:100%}.search input{padding:11px}.cartbtn{padding:10px}.hero-inner{grid-template-columns:1fr;padding:32px 18px}.hero-art{display:none}h1{font-size:34px}.benefits{grid-template-columns:1fr;padding:12px}.benefit{padding:10px}main{padding:22px 12px 40px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:120px;font-size:43px}.product-body{padding:10px}.product h3{font-size:14px}.desc{font-size:11px}.price{font-size:17px}.section-head{align-items:start;flex-direction:column}.sort{width:100%}.custom{padding:17px;align-items:start;flex-direction:column}.custom .outline{width:100%;text-align:center}.cartbtn{font-size:12px}.foot{display:block}}
 
-    /* Fixed collapsible category sidebar for storefront */
-    :root{--sidebar-expanded:258px;--sidebar-collapsed:76px;--sidebar-width:var(--sidebar-collapsed)}
-    body{--sidebar-width:var(--sidebar-collapsed)}
-    body.sidebar-expanded{--sidebar-width:var(--sidebar-expanded)}
-    .category-sidebar{position:fixed;z-index:25;inset:0 auto 0 0;width:var(--sidebar-width);background:linear-gradient(180deg,#0b1b2d,#102942 70%,#0b1a2b);color:#f8fafc;border-right:1px solid #d2b56c44;box-shadow:5px 0 24px #08111e16;display:flex;flex-direction:column;overflow:hidden;transition:width .22s ease}
-    .sidebar-brand{height:82px;min-height:82px;display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #ffffff19;overflow:hidden}
-    .sidebar-brandmark{height:43px;min-width:43px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#f6df9a,#b88b36);font-size:25px}
-    .sidebar-brandname{font-size:15px;line-height:1.1;font-weight:900;white-space:nowrap;opacity:0;transition:opacity .12s}
-    .sidebar-brandname small{display:block;color:var(--gold);font-size:9px;letter-spacing:2px;margin-top:5px}
-    .sidebar-toggle{position:absolute;top:91px;right:10px;width:34px;height:34px;border:1px solid #ffffff3b;background:#ffffff12;color:#f5d98e;border-radius:50%;font-weight:900;padding:0;display:grid;place-items:center}
-    .sidebar-label{padding:58px 17px 12px;font-size:10px;letter-spacing:1.8px;color:#aebbd0;white-space:nowrap}
-    .sidebar-category-nav{display:flex;flex-direction:column;gap:4px;padding:0 8px 12px;overflow-y:auto;overflow-x:hidden;max-width:none;margin:0}
-    .sidebar-category-nav button{width:100%;display:flex;align-items:center;gap:13px;text-align:left;min-height:48px;padding:9px 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:#eaf0f8;white-space:nowrap;font-size:13px;overflow:hidden}
-    .sidebar-category-nav button:hover,.sidebar-category-nav button.active{background:linear-gradient(135deg,#f7e2a4,#d5ab57);border-color:#f3d88f;color:#15243a}
-    .side-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;width:28px;height:28px;font-size:22px}
-    .side-icon img{width:27px;height:27px;object-fit:contain}
-    .side-label{opacity:0;visibility:hidden;transition:opacity .12s;white-space:nowrap}
-    .sidebar-bottom{margin-top:auto;border-top:1px solid #ffffff1c;padding:16px 13px;display:flex;align-items:center;gap:13px;white-space:nowrap;color:#d6e0ed;font-size:12px;overflow:hidden}
-    .toggle-wide,.toggle-narrow{display:none}
-    body.sidebar-expanded .sidebar-brandname,body.sidebar-expanded .side-label{opacity:1;visibility:visible}
-    body.sidebar-expanded .toggle-wide{display:inline}body.sidebar-collapsed .toggle-narrow{display:inline}
-    .site-shell{margin-left:var(--sidebar-width);min-width:0;transition:margin-left .22s ease}
-    .site-shell .head{max-width:1400px}.site-shell main,.site-shell .benefits,.site-shell .foot,.site-shell .footer-extra,.site-shell .hero-inner{max-width:1400px}
-    .site-shell header nav{display:none}
-    @media(max-width:700px){:root{--sidebar-expanded:238px;--sidebar-collapsed:62px}.sidebar-brand{padding:9px}.sidebar-brandmark{min-width:42px;width:42px}.sidebar-toggle{right:7px}.sidebar-label{padding-left:13px}.sidebar-category-nav{padding-left:5px;padding-right:5px}.sidebar-category-nav button{padding:8px 10px;gap:8px;min-height:46px}.side-icon{flex-basis:27px;width:27px}.site-shell .head{padding:10px}.site-shell .brand{min-width:0}.site-shell .brandname{font-size:12px}.site-shell .brandname small{font-size:8px;letter-spacing:1.5px}.site-shell .brandmark{width:36px;height:36px}.site-shell .hero-inner{grid-template-columns:1fr;padding:28px 16px}.site-shell .hero-art{display:none}.site-shell .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(prefers-reduced-motion:reduce){.category-sidebar,.site-shell,.side-label,.sidebar-brandname{transition:none}}
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap');
+    :root{--navy:#061d33;--navy2:#0c2b48;--gold:#f2c35d;--cream:#f7f8fa;--ink:#10233b;--muted:#697586;--line:#e5eaf0;--green:#16834a;--white:#fff}
+    body{font-family:'Inter',Arial,Helvetica,sans-serif;background:#f4f6f8;color:var(--ink)}
+    .topline{display:none!important}
+    header{position:sticky;top:0;margin-left:270px;background:linear-gradient(120deg,#061d33,#0d304f);z-index:15;border-bottom:1px solid #ffffff1c}
+    .head{max-width:none;margin:0;padding:15px 24px 12px;display:grid;grid-template-columns:minmax(245px,auto) minmax(220px,1fr) auto;grid-template-rows:auto auto;gap:12px 18px;align-items:center}
+    .brand{grid-column:1;grid-row:1;min-width:0;gap:12px}
+    .brandmark{height:54px;width:54px;border:0;border-radius:15px;background:#ffffff0c;font-size:34px}
+    .brandname{font-family:'Anton','Arial Narrow',sans-serif;font-weight:400;letter-spacing:1.3px;font-size:30px;line-height:1;color:#f7cc70;white-space:nowrap;text-shadow:0 1px 0 #0003}
+    .brandname small{font-family:'Inter',Arial,sans-serif;color:#fff;font-weight:600;font-size:11px;letter-spacing:4px;margin-top:7px}
+    .brand-description{grid-column:2/4;grid-row:1;color:#f3f6fa;font-size:14px;line-height:1.5;max-width:620px;border-left:1px solid #e8c77788;padding-left:20px}
+    .search{grid-column:1/3;grid-row:2;min-width:0;box-shadow:0 4px 16px #0002;border-radius:10px;height:48px}
+    .search input{padding:12px 16px;font-size:14px}
+    .search button{padding:0 23px;background:linear-gradient(135deg,#ffdc86,#e9b64c)}
+    .cartbtn{grid-column:3;grid-row:2;border:1px solid #e8c777;color:white;padding:13px 18px;border-radius:10px;height:48px}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:270px;z-index:25;background:linear-gradient(180deg,#061d33,#082641 72%,#061d33);color:white;border-right:1px solid #ffffff20;display:flex;flex-direction:column;transition:width .22s ease;overflow:hidden;box-shadow:5px 0 24px #06172a12}
+    .sidebar-top{height:105px;display:flex;align-items:center;justify-content:space-between;padding:20px 17px 12px;flex-shrink:0}
+    .sidebar-brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .sidebar-brand .brandmark{width:42px;height:42px;font-size:27px;flex-shrink:0}
+    .sidebar-brand .brandname{font-size:17px;letter-spacing:.8px;white-space:normal}
+    .sidebar-brand .brandname small{font-size:8px;letter-spacing:1.8px}
+    .sidebar-toggle{width:42px;height:42px;flex-shrink:0;border:1px solid #f2c35d;border-radius:50%;background:#ffffff08;color:#f2c35d;font-size:22px;display:grid;place-items:center}
+    #categoryNav{display:flex;flex-direction:column;gap:5px;overflow-y:auto;overflow-x:hidden;padding:8px 9px 18px;max-width:none;margin:0;flex:1}
+    #categoryNav button{width:100%;display:flex;align-items:center;gap:14px;text-align:left;border:1px solid transparent;background:transparent;color:#edf3fa;border-radius:9px;padding:13px 14px;min-height:54px;font-size:13px;font-weight:600;white-space:nowrap}
+    #categoryNav button .cat-icon{width:28px;min-width:28px;text-align:center;font-size:23px;line-height:1}
+    #categoryNav button .cat-label{overflow:hidden;text-overflow:ellipsis}
+    #categoryNav button.active,#categoryNav button:hover{background:linear-gradient(120deg,#ffdc86,#eab64c);color:#10233b;border-color:#ffdf8b;box-shadow:0 4px 12px #0002}
+    .sidebar.collapsed{width:78px}
+    .sidebar.collapsed .sidebar-top{padding:16px 12px;flex-direction:column;height:110px;gap:7px}
+    .sidebar.collapsed .sidebar-brand{display:none}
+    .sidebar.collapsed #categoryNav{padding:6px 9px}
+    .sidebar.collapsed #categoryNav button{justify-content:center;padding:12px 0;min-height:52px}
+    .sidebar.collapsed #categoryNav button .cat-label{display:none}
+    .sidebar.collapsed #categoryNav button .cat-icon{font-size:24px}
+    .hero,.benefits{display:none!important}
+    main{max-width:none;margin-left:270px;padding:25px 24px 50px}
+    .section-head{margin:0 0 18px;align-items:center}
+    h2{font-size:24px;letter-spacing:-.5px;color:#10233b}
+    .sub{font-size:13px}
+    .sort{border-radius:9px;padding:10px 12px}
+    .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .product{border:1px solid #e7ebf0;border-radius:14px;box-shadow:0 5px 18px #14233b08}
+    .photo{height:165px;background:linear-gradient(145deg,#fff,#f0f2f5);font-size:56px}
+    .photo img{object-fit:contain!important;padding:8px}
+    .product-body{padding:12px;gap:7px}
+    .product h3{font-size:14px;min-height:36px;color:#12233a}
+    .desc{font-size:11px;min-height:31px}
+    .price{font-size:18px;color:#0a2742}
+    .add{border-radius:8px;background:linear-gradient(120deg,#ffdc86,#eab64c);padding:10px}
+    .custom{margin-top:26px;border-radius:14px;box-shadow:0 4px 16px #10233b08}
+    footer{margin-left:270px;background:#061827}
+    .foot strong{font-family:'Anton','Arial Narrow',sans-serif;letter-spacing:1px;font-weight:400}
+    .cart-panel{border-radius:16px 0 0 16px}
+    @media(max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.head{grid-template-columns:minmax(210px,auto) minmax(180px,1fr) auto;gap:10px}.brandname{font-size:26px}.brand-description{font-size:12px}}
+    @media(max-width:760px){.sidebar{width:76px}.sidebar .sidebar-top{padding:14px 11px;flex-direction:column;height:108px;gap:7px}.sidebar .sidebar-brand{display:none}.sidebar #categoryNav{padding:6px 8px}.sidebar #categoryNav button{justify-content:center;padding:12px 0}.sidebar #categoryNav button .cat-label{display:none}.sidebar #categoryNav button .cat-icon{font-size:23px}.sidebar:not(.collapsed){width:76px}header,main,footer{margin-left:76px}.head{padding:12px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto auto;gap:9px}.brand{grid-column:1/3;grid-row:1}.brandmark{height:39px;width:39px;font-size:27px}.brandname{font-size:23px}.brandname small{font-size:9px;letter-spacing:2.5px}.brand-description{grid-column:1/3;grid-row:2;border-left:0;border-top:1px solid #e8c77766;padding:8px 0 0;font-size:11px}.search{grid-column:1;grid-row:3;height:43px}.search button{padding:0 12px}.search input{padding:10px;font-size:12px}.cartbtn{grid-column:2;grid-row:3;height:43px;padding:9px;font-size:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}main{padding:18px 12px 35px}.photo{height:130px}.section-head{gap:10px}.section-head h2{font-size:20px}.sort{max-width:100%;font-size:12px}.product-body{padding:9px}.product h3{font-size:13px;min-height:34px}.desc{font-size:10px;min-height:30px}.price{font-size:16px}.add{font-size:12px;padding:9px 5px}.custom{padding:15px}.custom .outline{white-space:normal}footer{padding:24px 12px}.foot{display:block}.foot>div{margin-bottom:18px}}
+    @media(max-width:420px){.sidebar{width:64px}.sidebar.collapsed{width:64px}.sidebar:not(.collapsed){width:64px}header,main,footer{margin-left:64px}.sidebar-toggle{width:36px;height:36px}.sidebar .sidebar-top{padding:12px 8px}.sidebar #categoryNav{padding:5px}.sidebar #categoryNav button{min-height:47px}.brandname{font-size:19px}.brandname small{font-size:8px}.brandmark{width:34px;height:34px}.brand-description{font-size:10px}.cartbtn{padding:8px 6px}.photo{height:105px}.product h3{font-size:12px}}
   </style>
 </head>
-<body class="sidebar-collapsed">
-  <aside class="category-sidebar" id="categorySidebar" aria-label="Store categories">
-    <div class="sidebar-brand">
-      <div class="sidebar-brandmark">🏆</div>
-      <div class="sidebar-brandname">SUBHAKAMNA<small>AWARDS &amp; PRINTS</small></div>
+<body>
+  <aside class="sidebar" id="sidebar" aria-label="Product category sidebar">
+    <div class="sidebar-top">
+      <a class="sidebar-brand" href="#" aria-label="SUBHAKAMNA Awards and Prints home">
+        <div class="brandmark">🏆</div>
+        <div class="brandname">SUBHAKAMNA<small>AWARDS & PRINTS</small></div>
+      </a>
+      <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Collapse category sidebar" title="Expand or collapse categories">«</button>
     </div>
-    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Expand category sidebar" aria-expanded="false"><span class="toggle-wide">⟨⟨</span><span class="toggle-narrow">⟩⟩</span></button>
-    <div class="sidebar-label">CATEGORIES</div>
-    <nav id="sidebarCategoryNav" class="sidebar-category-nav" aria-label="Product categories">
-      <button class="active" data-category="All" title="All Products"><span class="side-icon">🛍️</span><span class="side-label">All Products</span></button>
+    <nav id="categoryNav" aria-label="Product categories">
+      <button class="active" data-category="All"><span class="cat-icon">⌂</span><span class="cat-label">All Products</span></button>
+      <button data-category="Trophies & Awards"><span class="cat-icon">🏆</span><span class="cat-label">Trophies & Awards</span></button>
+      <button data-category="Medals & Mementos"><span class="cat-icon">🥇</span><span class="cat-label">Medals & Mementos</span></button>
+      <button data-category="Plaques"><span class="cat-icon">🛡️</span><span class="cat-label">Plaques</span></button>
+      <button data-category="Customized Gifts"><span class="cat-icon">🎁</span><span class="cat-label">Customized Gifts</span></button>
+      <button data-category="Printing"><span class="cat-icon">🖨️</span><span class="cat-label">Printing Services</span></button>
+      <button data-category="Certificates"><span class="cat-icon">📜</span><span class="cat-label">Certificates</span></button>
+      <button data-category="Stationery"><span class="cat-icon">✏️</span><span class="cat-label">Stationery</span></button>
+      <button data-category="Other"><span class="cat-icon">📦</span><span class="cat-label">Others</span></button>
     </nav>
-    <div class="sidebar-bottom"><span class="side-icon">💬</span><span class="side-label">Easy WhatsApp Ordering</span></div>
   </aside>
-  <div class="site-shell">
-  <div class="topline">Trophies • Printing • Stationery — Easy ordering on WhatsApp</div>
   <header>
     <div class="head">
-      <a class="brand" href="#" aria-label="Shubhkamna Awards and Prints home">
-        <div class="brandmark" id="brandMark">🏆</div>
-        <div class="brandname" id="brandName">SUBHAKAMNA<small>AWARDS & PRINTS</small></div>
+      <a class="brand" href="#" aria-label="SUBHAKAMNA Awards and Prints home">
+        <div class="brandmark">🏆</div>
+        <div class="brandname">SUBHAKAMNA<small>AWARDS & PRINTS</small></div>
       </a>
+      <div class="brand-description">Your trusted destination for trophies, medals, customized gifts and quality printing — made special for every achievement.</div>
       <form class="search" id="searchForm" role="search">
-        <input id="searchInput" type="search" placeholder="Search trophies, printing, stationery..." aria-label="Search products">
+        <input id="searchInput" type="search" placeholder="Search trophies, medals, printing, stationery..." aria-label="Search products">
         <button aria-label="Search">Search</button>
       </form>
       <button class="cartbtn" id="openCart" aria-label="Open shopping cart">🛒 Cart (<span id="cartCount">0</span>)</button>
     </div>
   </header>
-
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <div class="eyebrow">Welcome to our store</div>
-        <h1 id="heroTitle">Celebrate every win. Print every idea.</h1>
-        <p id="heroDescription">Shop trophies, medals, printing services and everyday stationery. Add products to your cart and send your order directly to us on WhatsApp.</p>
-        <a class="cta" href="#products">Explore Products&nbsp; →</a>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-card"><span>🏆</span><strong>Trophies & Awards</strong></div>
-        <div class="art-card"><span>🖨️</span><strong>Printing Services</strong></div>
-        <div class="art-card"><span>🥇</span><strong>Medals & Mementos</strong></div>
-        <div class="art-card"><span>✏️</span><strong>Stationery</strong></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="benefits" aria-label="Store benefits">
-    <div class="benefit"><span>📱</span><div><b>Easy WhatsApp Orders</b>Send your order in a few taps</div></div>
-    <div class="benefit"><span>🎨</span><div><b>Custom Printing</b>Ask about names, logos and designs</div></div>
-    <div class="benefit"><span>🚚</span><div><b>Local & India-wide</b>Delivery availability confirmed by us</div></div>
-  </section>
 
   <main>
     <section id="products">
@@ -209,13 +193,11 @@
 
   <footer>
     <div class="foot">
-      <div><strong id="footerShopName" style="color:#e8c777;font-size:17px">SUBHAKAMNA AWARDS & PRINTS</strong><p id="footerTagline">Trophies • Printing • Stationery</p><p>Every Achievement Deserves Recognition.</p><p id="footerAddress"></p><p id="footerHours"></p><p id="footerEmail"></p><p id="footerMaps"></p></div>
-      <div><strong>Order & Enquiries</strong><p>WhatsApp: <span id="footerPhone">Add your number in the website settings</span></p><p id="footerPhoneAlt"></p><p>Local pickup and India-wide shipping subject to confirmation.</p></div>
-      <div><strong>Important</strong><p>Confirm current price, customization, stock and delivery with us on WhatsApp before payment.</p></div>
+      <div><strong style="color:#e8c777;font-size:17px">SUBHAKAMNA AWARDS & PRINTS</strong><p>Trophies • Printing • Stationery</p><p>Every Achievement Deserves Recognition.</p></div>
+      <div><strong>Order & Enquiries</strong><p>WhatsApp: <span id="footerPhone">Add your number in the website settings</span></p><p>Local pickup and India-wide shipping subject to confirmation.</p></div>
+      <div><strong>Important</strong><p>Displayed prices are examples. Confirm current price, customization, stock and delivery with us on WhatsApp.</p></div>
     </div>
-    <div class="footer-extra"><div><strong>Payment options</strong><p id="paymentInfo" class="policy-text">Payment details will be shared by the shop.</p><img id="paymentQr" class="hidden" alt="Shop payment QR code"><p id="bankInfo" class="policy-text"></p></div><div><strong>Terms & Conditions</strong><div id="termsText" class="policy-text">Please confirm order details and payment terms with the shop before placing a custom order.</div></div></div>
   </footer>
-  </div><!-- /.site-shell -->
 
   <div class="cart-overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-label="Shopping cart">
     <div class="cart-panel">
@@ -234,81 +216,119 @@
   <div class="toast" id="toast" role="status"></div>
 
 <script>
-const FALLBACK_WHATSAPP_NUMBER = "918918922028";
-let WHATSAPP_NUMBER = FALLBACK_WHATSAPP_NUMBER;
-let db = null;
-let PRODUCTS = [];
-let VARIANTS = {};
-let shopSettings = {};
-let liveCategories = [];
+/* IMPORTANT: Replace the placeholder below with your WhatsApp number including country code.
+   India example format: 91XXXXXXXXXX (digits only; no +, spaces or dashes). */
+const WHATSAPP_NUMBER = "91XXXXXXXXXX";
+
+/* Demo products and sample prices. Edit this list before publishing.
+   Use your own product photos by adding an imageUrl field to a product. */
+const PRODUCTS = [
+  {id:1,name:"Classic Gold Trophy",category:"Trophies & Awards",price:299,emoji:"🏆",tag:"Popular",description:"Sports day, school and event awards."},
+  {id:2,name:"Premium Champion Cup",category:"Trophies & Awards",price:799,emoji:"🏆",tag:"Premium",description:"A standout trophy for special winners."},
+  {id:3,name:"Custom Name Trophy",category:"Trophies & Awards",price:449,emoji:"🥇",tag:"Customisable",description:"Ask us about name plates and engraving."},
+  {id:4,name:"Sports Medal",category:"Medals & Mementos",price:49,emoji:"🥇",tag:"Popular",description:"For school events and competitions."},
+  {id:5,name:"Wooden Memento",category:"Medals & Mementos",price:299,emoji:"🎖️",tag:"Customisable",description:"Personalised awards for functions."},
+  {id:6,name:"Visiting Cards",category:"Printing",price:250,emoji:"🪪",tag:"Printing",description:"Sample price per 100 cards; confirm finish."},
+  {id:7,name:"Flex Banner Printing",category:"Printing",price:20,emoji:"🖨️",tag:"Custom Order",description:"Sample price per sq. ft.; design extra if needed."},
+  {id:8,name:"Invitation Cards",category:"Printing",price:10,emoji:"💌",tag:"Printing",description:"Custom sizes, quantity and paper options."},
+  {id:9,name:"School Notebook",category:"Stationery",price:35,emoji:"📒",tag:"Stationery",description:"Everyday school and study essential."},
+  {id:10,name:"Pen Pack",category:"Stationery",price:50,emoji:"🖊️",tag:"Stationery",description:"Ask about available brands and quantities."},
+  {id:11,name:"Office File",category:"Stationery",price:25,emoji:"📁",tag:"Stationery",description:"Useful for school and office documents."},
+  {id:12,name:"Certificate Printing",category:"Printing",price:8,emoji:"📜",tag:"Custom Order",description:"Sample per-page price; paper and design vary."}
+];
+
 const state = {category:"All", query:"", cart:{}};
 const $ = id => document.getElementById(id);
-const money = value => "₹" + Number(value || 0).toLocaleString("en-IN",{maximumFractionDigits:2});
-function safeText(value){return String(value ?? "").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function validWhatsApp(){return /^\d{10,15}$/.test(WHATSAPP_NUMBER);}
-function whatsappUrl(message){return "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);}
-function openWhatsApp(message){if(!validWhatsApp()){alert("Please update the shop WhatsApp number in Admin → Shop Settings.");return;}window.open(whatsappUrl(message),"_blank","noopener,noreferrer");}
-function toast(message){const el=$("toast");el.textContent=message;el.style.display="block";setTimeout(()=>el.style.display="none",2300);}
-function renderCategories(){
- const nav=$("sidebarCategoryNav");
- const activeCategories=liveCategories.filter(c=>c.is_active);
- const names=["All",...activeCategories.map(c=>c.name)];
- const unique=[...new Set(names)];
- nav.innerHTML=unique.map(name=>{
-   const category=activeCategories.find(c=>c.name===name);
-   const icon=name==="All"?"🛍️":(category?.icon||"📦");
-   const iconMarkup=name!=="All"&&category?.icon_url
-     ? `<img src="${safeText(category.icon_url)}" alt="" loading="lazy">`
-     : `<span aria-hidden="true">${safeText(icon)}</span>`;
-   return `<button class="${state.category===name?'active':''}" data-category="${safeText(name)}" title="${safeText(name==='All'?'All Products':name)}"><span class="side-icon">${iconMarkup}</span><span class="side-label">${safeText(name==='All'?'All Products':name)}</span></button>`;
- }).join("");
- if(!unique.includes(state.category)) state.category="All";
- nav.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.category===state.category));
-}
-
+const money = value => "₹" + Number(value).toLocaleString("en-IN",{maximumFractionDigits:2});
+function safeText(value){return String(value).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function filteredProducts(){
- let list=PRODUCTS.filter(p=>(state.category==="All"||p.category===state.category)&&(p.name+" "+p.category+" "+p.description+" "+p.sku).toLowerCase().includes(state.query.toLowerCase()));
- const sort=$("sortSelect").value;
- if(sort==="low")list.sort((a,b)=>a.price-b.price);if(sort==="high")list.sort((a,b)=>b.price-a.price);if(sort==="az")list.sort((a,b)=>a.name.localeCompare(b.name));return list;
+  let list = PRODUCTS.filter(p => (state.category==="All" || p.category===state.category) &&
+    (p.name+" "+p.category+" "+p.description).toLowerCase().includes(state.query.toLowerCase()));
+  const sort = $("sortSelect").value;
+  if(sort==="low") list.sort((a,b)=>a.price-b.price);
+  if(sort==="high") list.sort((a,b)=>b.price-a.price);
+  if(sort==="az") list.sort((a,b)=>a.name.localeCompare(b.name));
+  return list;
 }
 function renderProducts(){
- const list=filteredProducts();$("resultCount").textContent=`${list.length} product${list.length===1?"":"s"} shown`;
- const grid=$("productGrid");
- if(!list.length){grid.innerHTML='<div class="empty">No products found. Try another search or category.</div>';return;}
- grid.innerHTML=list.map(p=>{const variants=VARIANTS[String(p.id)]||[];const available=variants.some(v=>Number(v.stock)>0);const out=variants.length>0&&!available;return `<article class="product"><div class="photo">${p.imageUrl?`<img src="${safeText(p.imageUrl)}" alt="${safeText(p.name)}" style="width:100%;height:100%;object-fit:cover">`:`<span aria-hidden="true">${safeText(p.emoji||"🏆")}</span>`}<span class="tag">${safeText(p.tag||p.category)}</span></div><div class="product-body"><div class="category">${safeText(p.category)}</div><h3>${safeText(p.name)}</h3><div class="desc">${safeText(p.description||"")}</div><div class="price">${variants.length?"From ":""}${money(p.price)} <small>${out?"out of stock":""}</small></div>${variants.length?`<label class="field">Size / variant <select data-variant="${safeText(p.id)}">${variants.map((v,i)=>`<option value="${i}" ${Number(v.stock)<=0?'disabled':''}>${safeText(v.size_label)} — ${money(v.discount_price)}${Number(v.stock)<=0?' (Out of stock)':''}</option>`).join("")}</select></label>`:""}<button class="add" data-add="${safeText(p.id)}" ${out?'disabled':''}>${out?'Out of Stock':'＋ Add to Cart'}</button></div></article>`;}).join("");
+  const list = filteredProducts();
+  $("resultCount").textContent = `${list.length} product${list.length===1?"":"s"} shown`;
+  const grid = $("productGrid");
+  if(!list.length){grid.innerHTML='<div class="empty">No products found. Try another search or category.</div>';return;}
+  grid.innerHTML = list.map(p=>`
+    <article class="product">
+      <div class="photo">${p.imageUrl ? `<img src="${safeText(p.imageUrl)}" alt="${safeText(p.name)}" style="width:100%;height:100%;object-fit:cover">` : `<span aria-hidden="true">${p.emoji}</span>`}<span class="tag">${safeText(p.tag||p.category)}</span></div>
+      <div class="product-body"><div class="category">${safeText(p.category)}</div><h3>${safeText(p.name)}</h3><div class="desc">${safeText(p.description)}</div>
+      <div class="price">${money(p.price)} <small>approx.</small></div><button class="add" data-add="${p.id}">＋ Add to Cart</button></div>
+    </article>`).join("");
 }
-function getChosenVariant(p){const select=document.querySelector(`[data-variant="${CSS.escape(String(p.id))}"]`);const vs=VARIANTS[String(p.id)]||[];if(!vs.length)return null;const chosen=vs[Number(select?.value||0)];return chosen||vs.find(v=>Number(v.stock)>0)||vs[0];}
-function cartLines(){return Object.entries(state.cart).map(([key,qty])=>{const [id,variantId]=key.split("::");const p=PRODUCTS.find(x=>String(x.id)===id);if(!p||qty<=0)return null;const variant=(VARIANTS[id]||[]).find(v=>String(v.id)===variantId);return {product:p,variant,qty,key};}).filter(Boolean);}
-function cartTotal(){return cartLines().reduce((sum,line)=>sum+Number(line.variant?.discount_price??line.product.price)*line.qty,0);}
-function renderCart(){const lines=cartLines();$("cartCount").textContent=lines.reduce((s,l)=>s+l.qty,0);$("cartTotal").textContent=money(cartTotal());$("cartItems").innerHTML=lines.length?lines.map(({product:p,variant:v,qty,key})=>`<div class="cart-item"><div class="cart-emoji">${safeText(p.emoji||"🏆")}</div><div><h4>${safeText(p.name)}</h4><small>${v?safeText(v.size_label)+" · ":""}${money(v?.discount_price??p.price)} each</small><div class="qty"><button data-qty="${safeText(key)}" data-delta="-1" aria-label="Decrease quantity">−</button><span>${qty}</span><button data-qty="${safeText(key)}" data-delta="1" aria-label="Increase quantity">+</button></div><button class="remove" data-remove="${safeText(key)}">Remove</button></div><strong>${money(Number(v?.discount_price??p.price)*qty)}</strong></div>`).join(""):'<div class="empty">Your cart is empty.<br>Add a product to get started.</div>';}
-function openCart(){$("cartOverlay").classList.add("open");document.body.style.overflow="hidden";}function closeCart(){$("cartOverlay").classList.remove("open");document.body.style.overflow="";}
-function applyShopSettings(s){shopSettings=s||{};const name=shopSettings.shop_name||"SUBHAKAMNA Awards & Prints";const parts=name.split(/\s+/);const shortName=parts[0]||"SUBHAKAMNA";document.title=name+" | Trophies, Printing & Stationery";$("brandName").innerHTML=`${safeText(shortName)}<small>AWARDS & PRINTS</small>`;$("footerShopName").textContent=name;$("footerTagline").textContent=shopSettings.tagline||"Trophies • Printing • Stationery";if(shopSettings.logo_url){$("brandMark").innerHTML=`<img src="${safeText(shopSettings.logo_url)}" alt="Shop logo">`;}else{$("brandMark").textContent="🏆";}
- WHATSAPP_NUMBER=String(shopSettings.whatsapp||shopSettings.phone||FALLBACK_WHATSAPP_NUMBER).replace(/\D/g,"");$("footerPhone").textContent=validWhatsApp()?"+"+WHATSAPP_NUMBER:"Contact us on WhatsApp";$("footerPhoneAlt").textContent=shopSettings.phone&&shopSettings.phone!==shopSettings.whatsapp?"Phone: "+shopSettings.phone:"";$("footerAddress").textContent=shopSettings.address||"";$("footerHours").textContent=shopSettings.opening_hours?"Hours: "+shopSettings.opening_hours:"";$("footerEmail").textContent=shopSettings.email?"Email: "+shopSettings.email:"";$("footerMaps").innerHTML=shopSettings.maps_url?`<a href="${safeText(shopSettings.maps_url)}" target="_blank" rel="noopener">Open in Google Maps ↗</a>`:"";$("paymentInfo").textContent=shopSettings.upi_id?"UPI ID: "+shopSettings.upi_id:"Payment details will be shared by the shop.";const qr=$("paymentQr");if(shopSettings.qr_image_url){qr.src=shopSettings.qr_image_url;qr.classList.remove("hidden");}else{qr.removeAttribute("src");qr.classList.add("hidden");}$("bankInfo").textContent="";$("termsText").textContent=shopSettings.terms_conditions||"Please confirm order details, customization, delivery and payment terms with the shop before confirming your order.";}
-async function loadStoreData(){
- if(!window.supabase||!window.SUPABASE_URL||!window.SUPABASE_ANON_KEY){console.warn("Supabase config missing; showing no live products.");$("productGrid").innerHTML='<div class="empty">Store setup is incomplete. Please contact the shop.</div>';return;}
- db=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);
- const [settingsRes,categoriesRes,productsRes]=await Promise.all([
-  db.from("public_shop_settings").select("*").eq("id","main").maybeSingle(),
-  db.from("categories").select("id,name,icon,icon_url,sort_order,is_active").eq("is_active",true).order("sort_order"),
-  db.from("products").select("id,name,sku,category,material,price,stock,tag,emoji,description,image_url,is_active").eq("is_active",true).order("created_at",{ascending:false})
- ]);
- if(settingsRes.error)console.warn("Shop settings could not load:",settingsRes.error.message);else if(settingsRes.data)applyShopSettings(settingsRes.data);
- if(categoriesRes.error)console.warn("Categories could not load:",categoriesRes.error.message);else liveCategories=categoriesRes.data||[];
- if(productsRes.error){console.error("Products could not load:",productsRes.error.message);$("productGrid").innerHTML='<div class="empty">Products could not load. Please contact the shop.</div>';renderCategories();return;}
- const raw=productsRes.data||[];const ids=raw.map(p=>p.id);let variants=[];
- if(ids.length){const vr=await db.from("product_variants").select("id,product_id,size_label,original_price,discount_price,stock").in("product_id",ids);if(vr.error){console.error("Product variants could not load:",vr.error.message);}else variants=vr.data||[];}
- VARIANTS={};variants.forEach(v=>{const key=String(v.product_id);(VARIANTS[key]||(VARIANTS[key]=[])).push(v);});
- PRODUCTS=raw.map(p=>{const vs=VARIANTS[String(p.id)]||[];const available=vs.filter(v=>Number(v.stock)>0);const prices=(available.length?available:vs).map(v=>Number(v.discount_price));return {id:p.id,name:p.name,sku:p.sku||"",category:p.category||"Other",price:prices.length?Math.min(...prices):Number(p.price||0),emoji:p.emoji||"🏆",tag:p.tag||"",description:p.description||"",imageUrl:p.image_url||"",material:p.material||"",stock:Number(p.stock||0)};});
- renderCategories();renderProducts();renderCart();
+function cartLines(){return Object.entries(state.cart).map(([id,qty])=>({product:PRODUCTS.find(p=>p.id===Number(id)),qty})).filter(x=>x.product&&x.qty>0);}
+function cartTotal(){return cartLines().reduce((sum,line)=>sum+line.product.price*line.qty,0);}
+function renderCart(){
+  const lines=cartLines();
+  $("cartCount").textContent=lines.reduce((s,l)=>s+l.qty,0);
+  $("cartTotal").textContent=money(cartTotal());
+  $("cartItems").innerHTML=lines.length?lines.map(({product:p,qty})=>`
+    <div class="cart-item">
+      <div class="cart-emoji">${p.emoji}</div>
+      <div><h4>${safeText(p.name)}</h4><small>${money(p.price)} each</small>
+        <div class="qty"><button data-qty="${p.id}" data-delta="-1" aria-label="Decrease quantity">−</button><span>${qty}</span><button data-qty="${p.id}" data-delta="1" aria-label="Increase quantity">+</button></div>
+        <button class="remove" data-remove="${p.id}">Remove</button>
+      </div><strong>${money(p.price*qty)}</strong>
+    </div>`).join(""):'<div class="empty">Your cart is empty.<br>Add a product to get started.</div>';
 }
-$("productGrid").addEventListener("click",e=>{const button=e.target.closest("[data-add]");if(!button)return;const p=PRODUCTS.find(x=>String(x.id)===button.dataset.add);if(!p)return;const v=getChosenVariant(p);if(v&&Number(v.stock)<=0){toast("This variant is out of stock.");return;}const key=String(p.id)+"::"+(v?String(v.id):"none");state.cart[key]=(state.cart[key]||0)+1;renderCart();toast("Added to cart");});
-$("cartItems").addEventListener("click",e=>{const q=e.target.closest("[data-qty]");const r=e.target.closest("[data-remove]");if(q){const key=q.dataset.qty;state.cart[key]=(state.cart[key]||0)+Number(q.dataset.delta);if(state.cart[key]<=0)delete state.cart[key];}if(r)delete state.cart[r.dataset.remove];renderCart();});
-$("sidebarCategoryNav").addEventListener("click",e=>{const b=e.target.closest("[data-category]");if(!b)return;state.category=b.dataset.category;document.querySelectorAll("#sidebarCategoryNav button").forEach(btn=>btn.classList.toggle("active",btn===b));renderProducts();});
-$("sidebarToggle").addEventListener("click",()=>{const expanded=document.body.classList.toggle("sidebar-expanded");document.body.classList.toggle("sidebar-collapsed",!expanded);$("sidebarToggle").setAttribute("aria-expanded",String(expanded));$("sidebarToggle").setAttribute("aria-label",expanded?"Collapse category sidebar":"Expand category sidebar");});
-$("searchForm").addEventListener("submit",e=>{e.preventDefault();state.query=$("searchInput").value.trim();renderProducts();$("products").scrollIntoView({behavior:"smooth"});});$("searchInput").addEventListener("input",()=>{state.query=$("searchInput").value.trim();renderProducts();});$("sortSelect").addEventListener("change",renderProducts);$("openCart").addEventListener("click",openCart);$("closeCart").addEventListener("click",closeCart);$("cartOverlay").addEventListener("click",e=>{if(e.target===$("cartOverlay"))closeCart();});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart();});
-$("checkoutBtn").addEventListener("click",()=>{const lines=cartLines();if(!lines.length){toast("Please add a product first.");return;}const name=$("customerName").value.trim(),location=$("customerLocation").value.trim(),notes=$("customerNotes").value.trim();if(!name){$("customerName").focus();toast("Please enter your name.");return;}if(!location){$("customerLocation").focus();toast("Please enter delivery location or PIN code.");return;}let message=`Hello ${shopSettings.shop_name||"SUBHAKAMNA Awards & Prints"}! I would like to place an order:\n\n`;message+=lines.map(({product:p,variant:v,qty})=>`• ${p.name}${v?" ("+v.size_label+")":""} × ${qty} — ${money(Number(v?.discount_price??p.price)*qty)}`).join("\n");message+=`\n\nEstimated product total: ${money(cartTotal())}\nCustomer name: ${name}\nDelivery location/PIN: ${location}`;if(notes)message+=`\nOrder notes/customisation: ${notes}`;message+="\n\nPlease confirm stock, final price, shipping/delivery charges and payment details before I pay.";openWhatsApp(message);});
-$("customOrder").addEventListener("click",e=>{e.preventDefault();openWhatsApp(`Hello ${shopSettings.shop_name||"SUBHAKAMNA Awards & Prints"}! I need a custom trophy/printing order. Please tell me how to share my design, photo or file and get a quote.`);});
-renderProducts();renderCart();loadStoreData().catch(error=>{console.error(error);$("productGrid").innerHTML='<div class="empty">Store data could not load. Please try again later.</div>';});
+function toast(message){const el=$("toast");el.textContent=message;el.style.display="block";setTimeout(()=>el.style.display="none",2300);}
+function openCart(){$("cartOverlay").classList.add("open");document.body.style.overflow="hidden";}
+function closeCart(){$("cartOverlay").classList.remove("open");document.body.style.overflow="";}
+function validWhatsApp(){return /^\d{10,15}$/.test(WHATSAPP_NUMBER)&&!WHATSAPP_NUMBER.includes("X");}
+function whatsappUrl(message){return "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);}
+function openWhatsApp(message){
+  if(!validWhatsApp()){alert("Website setup needed: open index.html and replace WHATSAPP_NUMBER with your WhatsApp number, including country code 91. Use digits only.");return;}
+  window.open(whatsappUrl(message),"_blank","noopener,noreferrer");
+}
+$("productGrid").addEventListener("click",e=>{
+  const button=e.target.closest("[data-add]");if(!button)return;
+  const id=Number(button.dataset.add);state.cart[id]=(state.cart[id]||0)+1;renderCart();toast("Added to cart");
+});
+$("cartItems").addEventListener("click",e=>{
+  const q=e.target.closest("[data-qty]");const r=e.target.closest("[data-remove]");
+  if(q){const id=Number(q.dataset.qty);state.cart[id]=(state.cart[id]||0)+Number(q.dataset.delta);if(state.cart[id]<=0)delete state.cart[id];}
+  if(r)delete state.cart[Number(r.dataset.remove)];
+  renderCart();
+});
+const sidebar=$("sidebar");
+$("sidebarToggle").addEventListener("click",()=>{
+  sidebar.classList.toggle("collapsed");
+  $("sidebarToggle").textContent=sidebar.classList.contains("collapsed")?"»":"«";
+  $("sidebarToggle").setAttribute("aria-label",sidebar.classList.contains("collapsed")?"Expand category sidebar":"Collapse category sidebar");
+});
+$("categoryNav").addEventListener("click",e=>{
+  const b=e.target.closest("[data-category]");if(!b)return;
+  state.category=b.dataset.category;
+  document.querySelectorAll("#categoryNav button").forEach(btn=>btn.classList.toggle("active",btn===b));
+  renderProducts();
+});
+$("searchForm").addEventListener("submit",e=>{e.preventDefault();state.query=$("searchInput").value.trim();renderProducts();$("products").scrollIntoView({behavior:"smooth"});});
+$("searchInput").addEventListener("input",()=>{state.query=$("searchInput").value.trim();renderProducts();});
+$("sortSelect").addEventListener("change",renderProducts);
+$("openCart").addEventListener("click",openCart);$("closeCart").addEventListener("click",closeCart);
+$("cartOverlay").addEventListener("click",e=>{if(e.target===$("cartOverlay"))closeCart();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart();});
+$("checkoutBtn").addEventListener("click",()=>{
+  const lines=cartLines();if(!lines.length){toast("Please add a product first.");return;}
+  const name=$("customerName").value.trim();const location=$("customerLocation").value.trim();const notes=$("customerNotes").value.trim();
+  if(!name){$("customerName").focus();toast("Please enter your name.");return;}
+  if(!location){$("customerLocation").focus();toast("Please enter delivery location or PIN code.");return;}
+  let message="Hello SUBHAKAMNA Awards & Prints! I would like to place an order:\n\n";
+  message+=lines.map(({product:p,qty})=>`• ${p.name} × ${qty} — ${money(p.price*qty)}`).join("\n");
+  message+=`\n\nEstimated product total: ${money(cartTotal())}\nCustomer name: ${name}\nDelivery location/PIN: ${location}`;
+  if(notes)message+=`\nOrder notes/customisation: ${notes}`;
+  message+="\n\nPlease confirm stock, final price, shipping/delivery charges and payment details before I pay.";
+  openWhatsApp(message);
+});
+$("customOrder").addEventListener("click",e=>{e.preventDefault();openWhatsApp("Hello SUBHAKAMNA Awards & Prints! I need a custom trophy/printing order. Please tell me how to share my design, photo or file and get a quote.");});
+$("footerPhone").textContent=validWhatsApp()?"+"+WHATSAPP_NUMBER:"Add your number in the website settings";
+renderProducts();renderCart();
 </script>
 </body>
 </html>
