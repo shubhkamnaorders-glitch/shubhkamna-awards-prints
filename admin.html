@@ -449,6 +449,7 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
         <form id="categoryForm">
           <div class="grid">
             <div class="field"><label for="newCategoryName">New category name</label><input id="newCategoryName" maxlength="100" required placeholder="e.g. Corporate Gifts"></div>
+            <div class="field"><label for="newCategoryIcon">Category icon (emoji)</label><input id="newCategoryIcon" maxlength="16" value="📦" placeholder="🏆"><div class="help">Example: 🏆 🎖️ 🖨️ 📜 🎁</div></div>
             <div class="field"><label for="newCategoryOrder">Display order</label><input id="newCategoryOrder" type="number" min="0" step="1" value="10"></div>
           </div>
           <div class="actions"><button class="btn-gold" type="submit">Add Category</button></div>
@@ -927,7 +928,7 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
     const previous = select.value;
     const active = categories.filter(c => c.is_active);
     select.innerHTML = active.map(c =>
-      `<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join("");
+      `<option value="${escapeHtml(c.name)}">${escapeHtml(c.icon || "📦")} ${escapeHtml(c.name)}</option>`).join("");
     if (!active.some(c => c.name === previous) && previous) {
       select.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(previous)}">${escapeHtml(previous)} (existing product)</option>`);
     }
@@ -943,16 +944,18 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
     $("categoryList").innerHTML = categories.map(c => `
       <div class="product-item" style="grid-template-columns:1fr auto">
         <div>
-          <div class="product-name">${escapeHtml(c.name)}</div>
-          <div class="product-meta">Order: ${Number(c.sort_order) || 0} · ${c.is_active ? "Active" : "Hidden"}</div>
+          <div class="product-name">${escapeHtml(c.icon || "📦")} ${escapeHtml(c.name)}</div>
+          <div class="product-meta">Icon: ${escapeHtml(c.icon || "📦")} · Order: ${Number(c.sort_order) || 0} · ${c.is_active ? "Active" : "Hidden"}</div>
         </div>
         <div class="product-actions">
           <button class="btn-dark" type="button" data-cat-rename="${c.id}">Rename</button>
+          <button class="btn-gold" type="button" data-cat-icon="${c.id}">Change Icon</button>
           <button class="btn-gold" type="button" data-cat-toggle="${c.id}">${c.is_active ? "Hide" : "Show"}</button>
           <button class="btn-red" type="button" data-cat-delete="${c.id}">Delete</button>
         </div>
       </div>`).join("");
     $("categoryList").querySelectorAll("[data-cat-rename]").forEach(btn => btn.addEventListener("click", () => renameCategory(btn.dataset.catRename)));
+    $("categoryList").querySelectorAll("[data-cat-icon]").forEach(btn => btn.addEventListener("click", () => changeCategoryIcon(btn.dataset.catIcon)));
     $("categoryList").querySelectorAll("[data-cat-toggle]").forEach(btn => btn.addEventListener("click", () => toggleCategory(btn.dataset.catToggle)));
     $("categoryList").querySelectorAll("[data-cat-delete]").forEach(btn => btn.addEventListener("click", () => deleteCategory(btn.dataset.catDelete)));
   }
@@ -961,12 +964,14 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
     event.preventDefault();
     const name = $("newCategoryName").value.trim();
     const sort_order = Number($("newCategoryOrder").value || 0);
+    const icon = $("newCategoryIcon").value.trim() || "📦";
     if (!name) return;
     try {
-      const { error } = await db.from("categories").insert({ name, sort_order, is_active: true });
+      const { error } = await db.from("categories").insert({ name, icon, sort_order, is_active: true });
       if (error) throw error;
       $("categoryForm").reset();
       $("newCategoryOrder").value = "10";
+      $("newCategoryIcon").value = "📦";
       await loadCategories();
       status("categoryStatus", "Category added.", "success");
     } catch (error) {
@@ -992,6 +997,23 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
       status("categoryStatus", "Category renamed and existing products updated.", "success");
     } catch (error) {
       status("categoryStatus", error.message || "Could not rename category.", "error");
+    }
+  }
+
+  async function changeCategoryIcon(id) {
+    const c = categories.find(x => String(x.id) === String(id));
+    if (!c) return;
+    const icon = prompt("Enter a category emoji/icon:", c.icon || "📦");
+    if (icon === null) return;
+    const clean = icon.trim();
+    if (!clean) return status("categoryStatus", "Please enter an emoji/icon.", "error");
+    try {
+      const { error } = await db.from("categories").update({ icon: clean }).eq("id", c.id);
+      if (error) throw error;
+      await loadCategories();
+      status("categoryStatus", "Category icon updated.", "success");
+    } catch (error) {
+      status("categoryStatus", error.message || "Could not update category icon.", "error");
     }
   }
 
