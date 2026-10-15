@@ -152,7 +152,18 @@
       .mobile-bottom-nav button:active,.mobile-bottom-nav button.active{color:#a57a1b}
       footer{padding-bottom:22px}
     }
-</style>
+
+    /* Compact premium welcome section */
+    .hero-inner{min-height:210px;padding:24px 22px;grid-template-columns:1.15fr .85fr;gap:18px}
+    .hero h1{font-size:clamp(26px,3vw,36px);line-height:1.12;margin:8px 0 10px;letter-spacing:-.5px}
+    .hero p{font-size:14px;line-height:1.5;margin-bottom:15px}
+    .hero-art{max-width:300px;gap:9px}
+    .art-card.photo-art{min-height:110px;gap:6px}
+    .photo-art img{height:76px}
+    .photo-art strong{font-size:11px}
+    .hero .cta{padding:10px 14px;font-size:13px}
+    @media(max-width:620px){.hero-inner{min-height:auto;padding:20px 16px;grid-template-columns:1fr}.hero h1{font-size:29px}.hero p{font-size:13px}.hero-art{display:none}}
+  </style>
 </head>
 <body>
   <div class="topline">Trophies • Printing • Stationery — Easy ordering on WhatsApp</div>
@@ -331,7 +342,6 @@ async function loadLiveProducts() {
           price: Number(v.discount_price ?? 0),
           stock: Number(v.stock ?? 0)
         }));
-
       return {
         id: p.id,
         name: p.name,
@@ -347,7 +357,6 @@ async function loadLiveProducts() {
         stock: Number(p.stock || 0)
       };
     });
-
     renderProducts();
     renderCart();
     console.log("Live products loaded:", PRODUCTS.length);
