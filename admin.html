@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shubhkamna Awards & Prints — Admin</title>
+<title>SUBHAKAMNA Awards & Prints — Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
@@ -268,7 +268,7 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
 
 <body>
 <header>
-  <div class="brand">✦ Shubhkamna <span>Awards & Prints</span> — Admin</div>
+  <div class="brand">✦ SUBHAKAMNA <span>Awards & Prints</span> — Admin</div>
   <a class="top-btn" href="index.html" target="_blank">View Store ↗</a>
 </header>
 
@@ -305,8 +305,14 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
         <button class="btn-dark" id="logoutBtn" type="button">Log Out</button>
       </div>
       <div id="globalStatus" class="status" role="status"></div>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn-dark" type="button" data-admin-tab="products">Products</button>
+        <button class="btn-dark" type="button" data-admin-tab="settings">Shop Settings</button>
+        <button class="btn-dark" type="button" data-admin-tab="categories">Categories</button>
+      </div>
     </div>
 
+    <div id="productsTab">
     <div class="panel">
       <h2 id="formHeading">＋ Add a product</h2>
       <form id="productForm">
@@ -404,6 +410,54 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
         <div class="empty">Loading products...</div>
       </div>
     </div>
+    </div>
+
+    <div id="settingsTab" class="hidden">
+      <div class="panel">
+        <h2>Shop Settings & Branding</h2>
+        <p class="muted">Yahan se shop ki public details, logo, payment aur policies update karein.</p>
+        <form id="settingsForm">
+          <div class="grid">
+            <div class="field"><label for="shopName">Shop name *</label><input id="shopName" required maxlength="160"></div>
+            <div class="field"><label for="shopTagline">Tagline</label><input id="shopTagline" maxlength="250"></div>
+            <div class="field full"><label for="shopAddress">Address</label><textarea id="shopAddress" maxlength="1000"></textarea></div>
+            <div class="field"><label for="shopPhone">Phone</label><input id="shopPhone" maxlength="40"></div>
+            <div class="field"><label for="shopWhatsapp">WhatsApp number (country code ke saath)</label><input id="shopWhatsapp" maxlength="40" placeholder="91XXXXXXXXXX"></div>
+            <div class="field"><label for="shopEmail">Email</label><input id="shopEmail" type="email" maxlength="200"></div>
+            <div class="field"><label for="shopHours">Opening hours</label><input id="shopHours" maxlength="250"></div>
+            <div class="field full"><label for="shopMaps">Google Maps link</label><input id="shopMaps" type="url" maxlength="1000"></div>
+            <div class="field"><label for="shopLogo">Shop logo (JPG, PNG, WebP; max 5 MB)</label><input id="shopLogo" type="file" accept="image/jpeg,image/png,image/webp"><div id="logoPreviewWrap" class="help"></div></div>
+            <div class="field"><label for="shopUpi">UPI ID</label><input id="shopUpi" maxlength="160" placeholder="yourname@upi"></div>
+            <div class="field"><label for="shopQr">Payment QR image (max 5 MB)</label><input id="shopQr" type="file" accept="image/jpeg,image/png,image/webp"><div id="qrPreviewWrap" class="help"></div></div>
+            <div class="field"><label for="bankName">Bank name</label><input id="bankName" maxlength="160"></div>
+            <div class="field"><label for="bankAccountName">Account holder name</label><input id="bankAccountName" maxlength="160"></div>
+            <div class="field"><label for="bankAccountNumber">Bank account number</label><input id="bankAccountNumber" maxlength="80" autocomplete="off"></div>
+            <div class="field"><label for="bankIfsc">IFSC</label><input id="bankIfsc" maxlength="20" autocapitalize="characters"></div>
+            <div class="field"><label for="bankBranch">Bank branch</label><input id="bankBranch" maxlength="160"></div>
+            <div class="field full"><label for="shopTerms">Terms & Conditions / policies</label><textarea id="shopTerms" maxlength="12000" style="min-height:180px" placeholder="Apni terms, return/refund, cancellation aur delivery policy yahan likhein."></textarea></div>
+          </div>
+          <div class="actions"><button class="btn-gold" id="saveSettingsBtn" type="submit">Save Shop Settings</button><button class="btn-dark" type="button" id="reloadSettingsBtn">Reload Saved Settings</button></div>
+          <div id="settingsStatus" class="status" role="status"></div>
+        </form>
+      </div>
+    </div>
+
+    <div id="categoriesTab" class="hidden">
+      <div class="panel">
+        <h2>Category Management</h2>
+        <p class="muted">Category add, rename, hide/show karein. Product form ke category dropdown mein active categories aayengi.</p>
+        <form id="categoryForm">
+          <div class="grid">
+            <div class="field"><label for="newCategoryName">New category name</label><input id="newCategoryName" maxlength="100" required placeholder="e.g. Corporate Gifts"></div>
+            <div class="field"><label for="newCategoryOrder">Display order</label><input id="newCategoryOrder" type="number" min="0" step="1" value="10"></div>
+          </div>
+          <div class="actions"><button class="btn-gold" type="submit">Add Category</button></div>
+          <div id="categoryStatus" class="status" role="status"></div>
+        </form>
+        <hr>
+        <div id="categoryList" class="product-list"><div class="empty">Loading categories...</div></div>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -414,6 +468,9 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
   let products = [];
   let variants = [];
   let currentImageUrl = "";
+  let categories = [];
+  let currentLogoUrl = "";
+  let currentQrUrl = "";
 
   function status(id, message, type = "") {
     const el = $(id);
@@ -766,12 +823,214 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
     }
   }
 
+
+  function setAdminTab(tab) {
+    ["products", "settings", "categories"].forEach(name => {
+      $(name + "Tab").classList.toggle("hidden", name !== tab);
+    });
+    if (tab === "settings") loadShopSettings().catch(e => status("settingsStatus", e.message, "error"));
+    if (tab === "categories") loadCategories().catch(e => status("categoryStatus", e.message, "error"));
+  }
+
+  async function uploadStoreAsset(file, prefix) {
+    if (!file) return "";
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type))
+      throw new Error("Image must be JPG, PNG or WebP.");
+    if (file.size > 5 * 1024 * 1024) throw new Error("Image must be 5 MB or smaller.");
+    const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
+    const path = `${prefix}/${Date.now()}-${Math.random().toString(36).slice(2,10)}.${ext}`;
+    const { error } = await db.storage.from("store-assets").upload(path, file, {
+      cacheControl: "3600", upsert: false, contentType: file.type
+    });
+    if (error) throw error;
+    return db.storage.from("store-assets").getPublicUrl(path).data.publicUrl;
+  }
+
+  async function loadShopSettings() {
+    status("settingsStatus", "Loading saved settings...");
+    const { data, error } = await db.from("shop_settings").select("*").eq("id", "main").single();
+    if (error) throw error;
+    const fields = {
+      shopName: data.shop_name, shopTagline: data.tagline, shopAddress: data.address,
+      shopPhone: data.phone, shopWhatsapp: data.whatsapp, shopEmail: data.email,
+      shopHours: data.opening_hours, shopMaps: data.maps_url, shopUpi: data.upi_id,
+      bankName: data.bank_name, bankAccountName: data.bank_account_name,
+      bankAccountNumber: data.bank_account_number, bankIfsc: data.bank_ifsc,
+      bankBranch: data.bank_branch, shopTerms: data.terms_conditions
+    };
+    Object.entries(fields).forEach(([id, value]) => { $(id).value = value || ""; });
+    currentLogoUrl = data.logo_url || "";
+    currentQrUrl = data.qr_image_url || "";
+    $("logoPreviewWrap").innerHTML = currentLogoUrl ? `Current logo: <a href="${escapeHtml(currentLogoUrl)}" target="_blank" rel="noopener">View image</a>` : "No logo uploaded yet.";
+    $("qrPreviewWrap").innerHTML = currentQrUrl ? `Current QR: <a href="${escapeHtml(currentQrUrl)}" target="_blank" rel="noopener">View image</a>` : "No QR uploaded yet.";
+    status("settingsStatus", "Settings loaded.", "success");
+  }
+
+  async function saveShopSettings(event) {
+    event.preventDefault();
+    const btn = $("saveSettingsBtn");
+    btn.disabled = true;
+    status("settingsStatus", "Saving shop settings...");
+    try {
+      const logoFile = $("shopLogo").files[0];
+      const qrFile = $("shopQr").files[0];
+      if (logoFile) currentLogoUrl = await uploadStoreAsset(logoFile, "logo");
+      if (qrFile) currentQrUrl = await uploadStoreAsset(qrFile, "payment-qr");
+      const payload = {
+        id: "main",
+        shop_name: $("shopName").value.trim(),
+        tagline: $("shopTagline").value.trim(),
+        logo_url: currentLogoUrl,
+        address: $("shopAddress").value.trim(),
+        phone: $("shopPhone").value.trim(),
+        whatsapp: $("shopWhatsapp").value.trim(),
+        email: $("shopEmail").value.trim(),
+        opening_hours: $("shopHours").value.trim(),
+        maps_url: $("shopMaps").value.trim(),
+        upi_id: $("shopUpi").value.trim(),
+        qr_image_url: currentQrUrl,
+        bank_name: $("bankName").value.trim(),
+        bank_account_name: $("bankAccountName").value.trim(),
+        bank_account_number: $("bankAccountNumber").value.trim(),
+        bank_ifsc: $("bankIfsc").value.trim().toUpperCase(),
+        bank_branch: $("bankBranch").value.trim(),
+        terms_conditions: $("shopTerms").value.trim(),
+        updated_at: new Date().toISOString()
+      };
+      const { error } = await db.from("shop_settings").upsert(payload, { onConflict: "id" });
+      if (error) throw error;
+      $("shopLogo").value = "";
+      $("shopQr").value = "";
+      await loadShopSettings();
+      status("settingsStatus", "Shop settings saved successfully.", "success");
+    } catch (error) {
+      console.error(error);
+      status("settingsStatus", error.message || "Could not save settings.", "error");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function loadCategories() {
+    status("categoryStatus", "Loading categories...");
+    const { data, error } = await db.from("categories")
+      .select("*").order("sort_order", { ascending: true }).order("name", { ascending: true });
+    if (error) throw error;
+    categories = data || [];
+    renderCategories();
+    renderCategoryOptions();
+    status("categoryStatus", `${categories.length} categories loaded.`, "success");
+  }
+
+  function renderCategoryOptions() {
+    const select = $("category");
+    const previous = select.value;
+    const active = categories.filter(c => c.is_active);
+    select.innerHTML = active.map(c =>
+      `<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join("");
+    if (!active.some(c => c.name === previous) && previous) {
+      select.insertAdjacentHTML("beforeend", `<option value="${escapeHtml(previous)}">${escapeHtml(previous)} (existing product)</option>`);
+    }
+    if (previous) select.value = previous;
+    if (!select.options.length) select.innerHTML = '<option value="Other">Other</option>';
+  }
+
+  function renderCategories() {
+    if (!categories.length) {
+      $("categoryList").innerHTML = '<div class="empty">No categories found.</div>';
+      return;
+    }
+    $("categoryList").innerHTML = categories.map(c => `
+      <div class="product-item" style="grid-template-columns:1fr auto">
+        <div>
+          <div class="product-name">${escapeHtml(c.name)}</div>
+          <div class="product-meta">Order: ${Number(c.sort_order) || 0} · ${c.is_active ? "Active" : "Hidden"}</div>
+        </div>
+        <div class="product-actions">
+          <button class="btn-dark" type="button" data-cat-rename="${c.id}">Rename</button>
+          <button class="btn-gold" type="button" data-cat-toggle="${c.id}">${c.is_active ? "Hide" : "Show"}</button>
+          <button class="btn-red" type="button" data-cat-delete="${c.id}">Delete</button>
+        </div>
+      </div>`).join("");
+    $("categoryList").querySelectorAll("[data-cat-rename]").forEach(btn => btn.addEventListener("click", () => renameCategory(btn.dataset.catRename)));
+    $("categoryList").querySelectorAll("[data-cat-toggle]").forEach(btn => btn.addEventListener("click", () => toggleCategory(btn.dataset.catToggle)));
+    $("categoryList").querySelectorAll("[data-cat-delete]").forEach(btn => btn.addEventListener("click", () => deleteCategory(btn.dataset.catDelete)));
+  }
+
+  async function addCategory(event) {
+    event.preventDefault();
+    const name = $("newCategoryName").value.trim();
+    const sort_order = Number($("newCategoryOrder").value || 0);
+    if (!name) return;
+    try {
+      const { error } = await db.from("categories").insert({ name, sort_order, is_active: true });
+      if (error) throw error;
+      $("categoryForm").reset();
+      $("newCategoryOrder").value = "10";
+      await loadCategories();
+      status("categoryStatus", "Category added.", "success");
+    } catch (error) {
+      status("categoryStatus", error.message || "Could not add category.", "error");
+    }
+  }
+
+  async function renameCategory(id) {
+    const c = categories.find(x => String(x.id) === String(id));
+    if (!c) return;
+    const name = prompt("Enter new category name:", c.name);
+    if (name === null) return;
+    const clean = name.trim();
+    if (!clean) return status("categoryStatus", "Category name cannot be empty.", "error");
+    try {
+      // Update existing products so their category names remain in sync.
+      const { error: productError } = await db.from("products").update({ category: clean }).eq("category", c.name);
+      if (productError) throw productError;
+      const { error } = await db.from("categories").update({ name: clean }).eq("id", c.id);
+      if (error) throw error;
+      await loadCategories();
+      await loadProducts();
+      status("categoryStatus", "Category renamed and existing products updated.", "success");
+    } catch (error) {
+      status("categoryStatus", error.message || "Could not rename category.", "error");
+    }
+  }
+
+  async function toggleCategory(id) {
+    const c = categories.find(x => String(x.id) === String(id));
+    if (!c) return;
+    try {
+      const { error } = await db.from("categories").update({ is_active: !c.is_active }).eq("id", c.id);
+      if (error) throw error;
+      await loadCategories();
+      status("categoryStatus", "Category visibility updated.", "success");
+    } catch (error) {
+      status("categoryStatus", error.message || "Could not update category.", "error");
+    }
+  }
+
+  async function deleteCategory(id) {
+    const c = categories.find(x => String(x.id) === String(id));
+    if (!c || !confirm(`Delete category "${c.name}"? Products using it must be reassigned first.`)) return;
+    try {
+      const { count, error: countError } = await db.from("products").select("id", { count: "exact", head: true }).eq("category", c.name);
+      if (countError) throw countError;
+      if (count > 0) throw new Error(`This category is used by ${count} product(s). Rename or reassign those products before deleting it.`);
+      const { error } = await db.from("categories").delete().eq("id", c.id);
+      if (error) throw error;
+      await loadCategories();
+      status("categoryStatus", "Category deleted.", "success");
+    } catch (error) {
+      status("categoryStatus", error.message || "Could not delete category.", "error");
+    }
+  }
+
   async function showDashboard() {
     $("loginSection").classList.add("hidden");
     $("dashboard").classList.remove("hidden");
     try {
       await loadProducts();
-      status("globalStatus", "Connected. Your products are ready.", "success");
+      await loadCategories();
+      status("globalStatus", "Connected. Products and categories are ready.", "success");
     } catch (error) {
       console.error(error);
       status("globalStatus",
@@ -821,6 +1080,10 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
   });
 
   $("productForm").addEventListener("submit", saveProduct);
+  $("settingsForm").addEventListener("submit", saveShopSettings);
+  $("reloadSettingsBtn").addEventListener("click", () => loadShopSettings().catch(e => status("settingsStatus", e.message, "error")));
+  $("categoryForm").addEventListener("submit", addCategory);
+  document.querySelectorAll("[data-admin-tab]").forEach(btn => btn.addEventListener("click", () => setAdminTab(btn.dataset.adminTab)));
   $("addSizeBtn").addEventListener("click", () => addSize());
   $("resetBtn").addEventListener("click", resetForm);
   $("searchProducts").addEventListener("input", renderProducts);
