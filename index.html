@@ -103,9 +103,49 @@
 
     @media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.brand{min-width:auto}.brandname{font-size:14px}.hero-inner{grid-template-columns:1fr .7fr}.photo{height:135px}}
     @media(max-width:620px){.footer-extra{grid-template-columns:1fr}.topline{font-size:11px}.head{padding:11px 12px;gap:9px;flex-wrap:wrap}.brand{flex:1}.brandmark{height:38px;width:38px}.brandname{font-size:13px}.brandname small{font-size:9px}.search{order:3;flex-basis:100%}.search input{padding:11px}.cartbtn{padding:10px}.hero-inner{grid-template-columns:1fr;padding:32px 18px}.hero-art{display:none}h1{font-size:34px}.benefits{grid-template-columns:1fr;padding:12px}.benefit{padding:10px}main{padding:22px 12px 40px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:120px;font-size:43px}.product-body{padding:10px}.product h3{font-size:14px}.desc{font-size:11px}.price{font-size:17px}.section-head{align-items:start;flex-direction:column}.sort{width:100%}.custom{padding:17px;align-items:start;flex-direction:column}.custom .outline{width:100%;text-align:center}.cartbtn{font-size:12px}.foot{display:block}}
+
+    /* Fixed collapsible category sidebar for storefront */
+    :root{--sidebar-expanded:258px;--sidebar-collapsed:76px;--sidebar-width:var(--sidebar-collapsed)}
+    body{--sidebar-width:var(--sidebar-collapsed)}
+    body.sidebar-expanded{--sidebar-width:var(--sidebar-expanded)}
+    .category-sidebar{position:fixed;z-index:25;inset:0 auto 0 0;width:var(--sidebar-width);background:linear-gradient(180deg,#0b1b2d,#102942 70%,#0b1a2b);color:#f8fafc;border-right:1px solid #d2b56c44;box-shadow:5px 0 24px #08111e16;display:flex;flex-direction:column;overflow:hidden;transition:width .22s ease}
+    .sidebar-brand{height:82px;min-height:82px;display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #ffffff19;overflow:hidden}
+    .sidebar-brandmark{height:43px;min-width:43px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#f6df9a,#b88b36);font-size:25px}
+    .sidebar-brandname{font-size:15px;line-height:1.1;font-weight:900;white-space:nowrap;opacity:0;transition:opacity .12s}
+    .sidebar-brandname small{display:block;color:var(--gold);font-size:9px;letter-spacing:2px;margin-top:5px}
+    .sidebar-toggle{position:absolute;top:91px;right:10px;width:34px;height:34px;border:1px solid #ffffff3b;background:#ffffff12;color:#f5d98e;border-radius:50%;font-weight:900;padding:0;display:grid;place-items:center}
+    .sidebar-label{padding:58px 17px 12px;font-size:10px;letter-spacing:1.8px;color:#aebbd0;white-space:nowrap}
+    .sidebar-category-nav{display:flex;flex-direction:column;gap:4px;padding:0 8px 12px;overflow-y:auto;overflow-x:hidden;max-width:none;margin:0}
+    .sidebar-category-nav button{width:100%;display:flex;align-items:center;gap:13px;text-align:left;min-height:48px;padding:9px 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:#eaf0f8;white-space:nowrap;font-size:13px;overflow:hidden}
+    .sidebar-category-nav button:hover,.sidebar-category-nav button.active{background:linear-gradient(135deg,#f7e2a4,#d5ab57);border-color:#f3d88f;color:#15243a}
+    .side-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;width:28px;height:28px;font-size:22px}
+    .side-icon img{width:27px;height:27px;object-fit:contain}
+    .side-label{opacity:0;visibility:hidden;transition:opacity .12s;white-space:nowrap}
+    .sidebar-bottom{margin-top:auto;border-top:1px solid #ffffff1c;padding:16px 13px;display:flex;align-items:center;gap:13px;white-space:nowrap;color:#d6e0ed;font-size:12px;overflow:hidden}
+    .toggle-wide,.toggle-narrow{display:none}
+    body.sidebar-expanded .sidebar-brandname,body.sidebar-expanded .side-label{opacity:1;visibility:visible}
+    body.sidebar-expanded .toggle-wide{display:inline}body.sidebar-collapsed .toggle-narrow{display:inline}
+    .site-shell{margin-left:var(--sidebar-width);min-width:0;transition:margin-left .22s ease}
+    .site-shell .head{max-width:1400px}.site-shell main,.site-shell .benefits,.site-shell .foot,.site-shell .footer-extra,.site-shell .hero-inner{max-width:1400px}
+    .site-shell header nav{display:none}
+    @media(max-width:700px){:root{--sidebar-expanded:238px;--sidebar-collapsed:62px}.sidebar-brand{padding:9px}.sidebar-brandmark{min-width:42px;width:42px}.sidebar-toggle{right:7px}.sidebar-label{padding-left:13px}.sidebar-category-nav{padding-left:5px;padding-right:5px}.sidebar-category-nav button{padding:8px 10px;gap:8px;min-height:46px}.side-icon{flex-basis:27px;width:27px}.site-shell .head{padding:10px}.site-shell .brand{min-width:0}.site-shell .brandname{font-size:12px}.site-shell .brandname small{font-size:8px;letter-spacing:1.5px}.site-shell .brandmark{width:36px;height:36px}.site-shell .hero-inner{grid-template-columns:1fr;padding:28px 16px}.site-shell .hero-art{display:none}.site-shell .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(prefers-reduced-motion:reduce){.category-sidebar,.site-shell,.side-label,.sidebar-brandname{transition:none}}
   </style>
 </head>
-<body>
+<body class="sidebar-collapsed">
+  <aside class="category-sidebar" id="categorySidebar" aria-label="Store categories">
+    <div class="sidebar-brand">
+      <div class="sidebar-brandmark">🏆</div>
+      <div class="sidebar-brandname">SUBHAKAMNA<small>AWARDS &amp; PRINTS</small></div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Expand category sidebar" aria-expanded="false"><span class="toggle-wide">⟨⟨</span><span class="toggle-narrow">⟩⟩</span></button>
+    <div class="sidebar-label">CATEGORIES</div>
+    <nav id="sidebarCategoryNav" class="sidebar-category-nav" aria-label="Product categories">
+      <button class="active" data-category="All" title="All Products"><span class="side-icon">🛍️</span><span class="side-label">All Products</span></button>
+    </nav>
+    <div class="sidebar-bottom"><span class="side-icon">💬</span><span class="side-label">Easy WhatsApp Ordering</span></div>
+  </aside>
+  <div class="site-shell">
   <div class="topline">Trophies • Printing • Stationery — Easy ordering on WhatsApp</div>
   <header>
     <div class="head">
@@ -119,9 +159,6 @@
       </form>
       <button class="cartbtn" id="openCart" aria-label="Open shopping cart">🛒 Cart (<span id="cartCount">0</span>)</button>
     </div>
-    <nav id="categoryNav" aria-label="Product categories">
-      <button class="active" data-category="All">All Products</button>
-    </nav>
   </header>
 
   <section class="hero">
@@ -178,6 +215,7 @@
     </div>
     <div class="footer-extra"><div><strong>Payment options</strong><p id="paymentInfo" class="policy-text">Payment details will be shared by the shop.</p><img id="paymentQr" class="hidden" alt="Shop payment QR code"><p id="bankInfo" class="policy-text"></p></div><div><strong>Terms & Conditions</strong><div id="termsText" class="policy-text">Please confirm order details and payment terms with the shop before placing a custom order.</div></div></div>
   </footer>
+  </div><!-- /.site-shell -->
 
   <div class="cart-overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-label="Shopping cart">
     <div class="cart-panel">
@@ -212,13 +250,22 @@ function whatsappUrl(message){return "https://wa.me/"+WHATSAPP_NUMBER+"?text="+e
 function openWhatsApp(message){if(!validWhatsApp()){alert("Please update the shop WhatsApp number in Admin → Shop Settings.");return;}window.open(whatsappUrl(message),"_blank","noopener,noreferrer");}
 function toast(message){const el=$("toast");el.textContent=message;el.style.display="block";setTimeout(()=>el.style.display="none",2300);}
 function renderCategories(){
- const nav=$("categoryNav");
- const names=["All",...liveCategories.filter(c=>c.is_active).map(c=>c.name)];
+ const nav=$("sidebarCategoryNav");
+ const activeCategories=liveCategories.filter(c=>c.is_active);
+ const names=["All",...activeCategories.map(c=>c.name)];
  const unique=[...new Set(names)];
- nav.innerHTML=unique.map(name=>{const category=liveCategories.find(c=>c.name===name);const icon=name==="All"?"🛍️":(category?.icon||"📦");const iconMarkup=name!=="All"&&category?.icon_url?`<img src="${safeText(category.icon_url)}" alt="" style="width:22px;height:22px;object-fit:contain;vertical-align:middle">`:`<span aria-hidden="true">${safeText(icon)}</span>`;return `<button class="${state.category===name?'active':''}" data-category="${safeText(name)}">${iconMarkup} ${safeText(name==="All"?"All Products":name)}</button>`;}).join("");
+ nav.innerHTML=unique.map(name=>{
+   const category=activeCategories.find(c=>c.name===name);
+   const icon=name==="All"?"🛍️":(category?.icon||"📦");
+   const iconMarkup=name!=="All"&&category?.icon_url
+     ? `<img src="${safeText(category.icon_url)}" alt="" loading="lazy">`
+     : `<span aria-hidden="true">${safeText(icon)}</span>`;
+   return `<button class="${state.category===name?'active':''}" data-category="${safeText(name)}" title="${safeText(name==='All'?'All Products':name)}"><span class="side-icon">${iconMarkup}</span><span class="side-label">${safeText(name==='All'?'All Products':name)}</span></button>`;
+ }).join("");
  if(!unique.includes(state.category)) state.category="All";
  nav.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.category===state.category));
 }
+
 function filteredProducts(){
  let list=PRODUCTS.filter(p=>(state.category==="All"||p.category===state.category)&&(p.name+" "+p.category+" "+p.description+" "+p.sku).toLowerCase().includes(state.query.toLowerCase()));
  const sort=$("sortSelect").value;
@@ -256,7 +303,8 @@ async function loadStoreData(){
 }
 $("productGrid").addEventListener("click",e=>{const button=e.target.closest("[data-add]");if(!button)return;const p=PRODUCTS.find(x=>String(x.id)===button.dataset.add);if(!p)return;const v=getChosenVariant(p);if(v&&Number(v.stock)<=0){toast("This variant is out of stock.");return;}const key=String(p.id)+"::"+(v?String(v.id):"none");state.cart[key]=(state.cart[key]||0)+1;renderCart();toast("Added to cart");});
 $("cartItems").addEventListener("click",e=>{const q=e.target.closest("[data-qty]");const r=e.target.closest("[data-remove]");if(q){const key=q.dataset.qty;state.cart[key]=(state.cart[key]||0)+Number(q.dataset.delta);if(state.cart[key]<=0)delete state.cart[key];}if(r)delete state.cart[r.dataset.remove];renderCart();});
-$("categoryNav").addEventListener("click",e=>{const b=e.target.closest("[data-category]");if(!b)return;state.category=b.dataset.category;document.querySelectorAll("#categoryNav button").forEach(btn=>btn.classList.toggle("active",btn===b));renderProducts();});
+$("sidebarCategoryNav").addEventListener("click",e=>{const b=e.target.closest("[data-category]");if(!b)return;state.category=b.dataset.category;document.querySelectorAll("#sidebarCategoryNav button").forEach(btn=>btn.classList.toggle("active",btn===b));renderProducts();});
+$("sidebarToggle").addEventListener("click",()=>{const expanded=document.body.classList.toggle("sidebar-expanded");document.body.classList.toggle("sidebar-collapsed",!expanded);$("sidebarToggle").setAttribute("aria-expanded",String(expanded));$("sidebarToggle").setAttribute("aria-label",expanded?"Collapse category sidebar":"Expand category sidebar");});
 $("searchForm").addEventListener("submit",e=>{e.preventDefault();state.query=$("searchInput").value.trim();renderProducts();$("products").scrollIntoView({behavior:"smooth"});});$("searchInput").addEventListener("input",()=>{state.query=$("searchInput").value.trim();renderProducts();});$("sortSelect").addEventListener("change",renderProducts);$("openCart").addEventListener("click",openCart);$("closeCart").addEventListener("click",closeCart);$("cartOverlay").addEventListener("click",e=>{if(e.target===$("cartOverlay"))closeCart();});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart();});
 $("checkoutBtn").addEventListener("click",()=>{const lines=cartLines();if(!lines.length){toast("Please add a product first.");return;}const name=$("customerName").value.trim(),location=$("customerLocation").value.trim(),notes=$("customerNotes").value.trim();if(!name){$("customerName").focus();toast("Please enter your name.");return;}if(!location){$("customerLocation").focus();toast("Please enter delivery location or PIN code.");return;}let message=`Hello ${shopSettings.shop_name||"SUBHAKAMNA Awards & Prints"}! I would like to place an order:\n\n`;message+=lines.map(({product:p,variant:v,qty})=>`• ${p.name}${v?" ("+v.size_label+")":""} × ${qty} — ${money(Number(v?.discount_price??p.price)*qty)}`).join("\n");message+=`\n\nEstimated product total: ${money(cartTotal())}\nCustomer name: ${name}\nDelivery location/PIN: ${location}`;if(notes)message+=`\nOrder notes/customisation: ${notes}`;message+="\n\nPlease confirm stock, final price, shipping/delivery charges and payment details before I pay.";openWhatsApp(message);});
 $("customOrder").addEventListener("click",e=>{e.preventDefault();openWhatsApp(`Hello ${shopSettings.shop_name||"SUBHAKAMNA Awards & Prints"}! I need a custom trophy/printing order. Please tell me how to share my design, photo or file and get a quote.`);});
