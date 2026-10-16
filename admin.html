@@ -838,12 +838,14 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
   const orderStatuses = ["Pending", "Confirmed", "In Production", "Ready", "Shipped", "Delivered", "Cancelled"];
   const paymentStatuses = ["Unpaid", "Payment Submitted", "Partially Paid", "Paid", "Refunded"];
 
+  let loadedOrders = [];
   async function loadOrders() {
     status("ordersStatus", "Loading orders...");
     $("ordersList").innerHTML = '<div class="empty">Loading orders...</div>';
     const { data, error } = await db.from("orders").select("*").order("created_at", { ascending: false }).limit(200);
     if (error) throw error;
     const orders = data || [];
+    loadedOrders = orders;
     if (!orders.length) {
       $("ordersList").innerHTML = '<div class="empty">No orders found yet.</div>';
       status("ordersStatus", "No orders yet.", "success");
@@ -871,8 +873,10 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
         <div class="grid" style="margin-top:14px">
           <div class="field"><label for="order-status-${safeId}">Order status</label><select id="order-status-${safeId}" data-order-status="${safeId}">${orderStatuses.map(x => `<option ${x === o.order_status ? "selected" : ""}>${x}</option>`).join("")}</select></div>
           <div class="field"><label for="payment-status-${safeId}">Payment status</label><select id="payment-status-${safeId}" data-payment-status="${safeId}">${paymentStatuses.map(x => `<option ${x === o.payment_status ? "selected" : ""}>${x}</option>`).join("")}</select></div>
+          <div class="field"><label for="amount-paid-${safeId}">Amount received (₹)</label><input id="amount-paid-${safeId}" data-amount-paid="${safeId}" type="number" min="0" max="${Number(o.total_amount||0)}" step="0.01" value="${Number(o.amount_paid||0)}"></div>
         </div>
-        <div class="actions"><button type="button" class="btn-gold" data-save-order="${safeId}">Save Status</button></div>
+        <div class="help">Balance due: ${money(Math.max(0,Number(o.total_amount||0)-Number(o.amount_paid||0)))} · Stock ${o.stock_deducted ? "deducted" : "not yet deducted"}</div>
+        <div class="actions"><button type="button" class="btn-gold" data-save-order="${safeId}">Save Order & Payment</button><button type="button" class="btn-dark" data-invoice-order="${safeId}">Invoice / Print PDF</button><button type="button" class="btn-dark" data-notify-order="${safeId}">Notify on WhatsApp</button></div>
       </article>`;
     }).join("");
     status("ordersStatus", `${orders.length} most recent order(s) loaded.`, "success");
@@ -881,10 +885,41 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
   async function saveOrderStatus(id) {
     const orderStatus = $("order-status-" + id).value;
     const paymentStatus = $("payment-status-" + id).value;
-    status("ordersStatus", "Saving order status...");
-    const { error } = await db.from("orders").update({ order_status: orderStatus, payment_status: paymentStatus, updated_at: new Date().toISOString() }).eq("id", id);
+    const amountPaid = Number($("amount-paid-" + id).value || 0);
+    const order = loadedOrders.find(o => String(o.id) === String(id));
+    if (!order) throw new Error("Order not found. Refresh and try again.");
+    if (!Number.isFinite(amountPaid) || amountPaid < 0 || amountPaid > Number(order.total_amount)) throw new Error("Amount received must be between ₹0 and the order total.");
+    status("ordersStatus", "Saving order status and payment...");
+    const { error } = await db.from("orders").update({ order_status: orderStatus, payment_status: paymentStatus, amount_paid: amountPaid, updated_at: new Date().toISOString() }).eq("id", id);
     if (error) throw error;
-    status("ordersStatus", "Order status updated successfully.", "success");
+    status("ordersStatus", "Order and payment updated successfully.", "success");
+    await loadOrders();
+  }
+
+  function openInvoice(id) {
+    const o = loadedOrders.find(x => String(x.id) === String(id));
+    if (!o) { status("ordersStatus", "Order not found. Refresh orders.", "error"); return; }
+    const esc = escapeHtml;
+    const items = (Array.isArray(o.items) ? o.items : []).map(item => {
+      const name = esc(item.product_name || item.name || "Product");
+      const variant = item.variant_name || item.variant || item.size || "";
+      const qty = Number(item.quantity ?? item.qty ?? 1);
+      const price = Number(item.unit_price ?? item.price ?? 0);
+      const matter = item.printing_matter || item.matter || "";
+      return `<tr><td>${name}${variant ? " ("+esc(variant)+")" : ""}${matter ? `<br><small>${esc(matter)}</small>` : ""}</td><td>${qty}</td><td>${money(price)}</td><td>${money(price*qty)}</td></tr>`;
+    }).join("");
+    const w = window.open("", "_blank", "width=900,height=700");
+    if (!w) { status("ordersStatus", "Please allow pop-ups to print the invoice.", "error"); return; }
+    w.document.write(`<!doctype html><html><head><title>Invoice ${esc(o.order_number||o.id)}</title><meta charset="utf-8"><style>body{font:14px Arial,sans-serif;color:#222;margin:32px}h1{margin-bottom:4px}small{color:#555}header{display:flex;justify-content:space-between;border-bottom:2px solid #222;padding-bottom:16px;margin-bottom:20px}.meta{line-height:1.7}table{width:100%;border-collapse:collapse;margin-top:24px}th,td{border:1px solid #ccc;padding:10px;text-align:left}th{background:#f1f1f1}.totals{margin:20px 0 0 auto;width:300px}.totals div{display:flex;justify-content:space-between;padding:6px}.grand{font-weight:bold;border-top:2px solid #222}@media print{button{display:none}}</style></head><body><header><div><h1>SUBHAKAMNA Awards & Prints</h1><div>Invoice / Order Receipt</div></div><div><strong>${esc(o.order_number||"Order #"+o.id)}</strong><br>${o.created_at?new Date(o.created_at).toLocaleString("en-IN"):""}</div></header><div class="meta"><strong>Bill to:</strong> ${esc(o.customer_name||"")}<br><strong>Phone:</strong> ${esc(o.customer_phone||"")}<br><strong>Delivery:</strong> ${esc(o.delivery_address||"")}<br><strong>Order status:</strong> ${esc(o.order_status||"")} · <strong>Payment:</strong> ${esc(o.payment_status||"")}</div><table><thead><tr><th>Item / customization</th><th>Qty</th><th>Unit price</th><th>Amount</th></tr></thead><tbody>${items}</tbody></table><div class="totals"><div><span>Order total</span><strong>${money(o.total_amount)}</strong></div><div><span>Amount received</span><strong>${money(o.amount_paid||0)}</strong></div><div class="grand"><span>Balance due</span><strong>${money(Math.max(0,Number(o.total_amount||0)-Number(o.amount_paid||0)))}</strong></div></div><p style="margin-top:36px">Thank you for your order. This is an order invoice/receipt; confirm final shipping and customization charges with the shop.</p><button onclick="window.print()">Print / Save as PDF</button><script>window.onload=()=>setTimeout(()=>window.print(),300)<\/script></body></html>`);
+    w.document.close();
+  }
+  function notifyOrder(id) {
+    const o = loadedOrders.find(x => String(x.id) === String(id));
+    if (!o) { status("ordersStatus", "Order not found. Refresh orders.", "error"); return; }
+    const phone = String(o.customer_phone||"").replace(/\D/g,"");
+    if (phone.length < 10) { status("ordersStatus", "Customer WhatsApp number is missing or invalid.", "error"); return; }
+    const message = `Hello ${o.customer_name||"Customer"}, update on your SUBHAKAMNA Awards & Prints order ${o.order_number||("#"+o.id)}.\nOrder status: ${o.order_status}\nPayment status: ${o.payment_status}\nOrder total: ${money(o.total_amount)}\nAmount received: ${money(o.amount_paid||0)}\nBalance due: ${money(Math.max(0,Number(o.total_amount||0)-Number(o.amount_paid||0)))}\nThank you.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
   }
 
   function setAdminTab(tab) {
@@ -1227,7 +1262,12 @@ Please send a screenshot of this message.`);
   $("reloadSettingsBtn").addEventListener("click", () => loadShopSettings().catch(e => status("settingsStatus", e.message, "error")));
   $("categoryForm").addEventListener("submit", addCategory);
   $("refreshOrdersBtn").addEventListener("click", () => loadOrders().catch(e => status("ordersStatus", e.message || "Could not load orders.", "error")));
-  $("ordersList").addEventListener("click", event => { const btn = event.target.closest("[data-save-order]"); if (btn) saveOrderStatus(btn.dataset.saveOrder).catch(e => status("ordersStatus", e.message || "Could not update order.", "error")); });
+  $("ordersList").addEventListener("click", event => {
+    const btn = event.target.closest("button"); if (!btn) return;
+    if (btn.dataset.saveOrder) saveOrderStatus(btn.dataset.saveOrder).catch(e => status("ordersStatus", e.message || "Could not update order.", "error"));
+    if (btn.dataset.invoiceOrder) openInvoice(btn.dataset.invoiceOrder);
+    if (btn.dataset.notifyOrder) notifyOrder(btn.dataset.notifyOrder);
+  });
   document.querySelectorAll("[data-admin-tab]").forEach(btn => btn.addEventListener("click", () => setAdminTab(btn.dataset.adminTab)));
   $("addSizeBtn").addEventListener("click", () => addSize());
   $("resetBtn").addEventListener("click", resetForm);
