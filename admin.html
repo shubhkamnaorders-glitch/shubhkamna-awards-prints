@@ -307,6 +307,7 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
       <div id="globalStatus" class="status" role="status"></div>
       <div class="actions" style="margin-top:14px">
         <button class="btn-dark" type="button" data-admin-tab="products">Products</button>
+        <button class="btn-dark" type="button" data-admin-tab="orders">Orders</button>
         <button class="btn-dark" type="button" data-admin-tab="settings">Shop Settings</button>
         <button class="btn-dark" type="button" data-admin-tab="categories">Categories</button>
       </div>
@@ -410,6 +411,14 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
         <div class="empty">Loading products...</div>
       </div>
     </div>
+    </div>
+
+    <div id="ordersTab" class="hidden">
+      <div class="panel">
+        <div class="toolbar"><div><h2>Order Management</h2><p class="muted">Customer orders, customization details, and payment/order status.</p></div><button class="btn-gold" type="button" id="refreshOrdersBtn">Refresh Orders</button></div>
+        <div id="ordersStatus" class="status" role="status"></div>
+        <div id="ordersList" class="product-list"><div class="empty">Open Orders to load customer orders.</div></div>
+      </div>
     </div>
 
     <div id="settingsTab" class="hidden">
@@ -825,10 +834,64 @@ hr { border: 0; border-top: 1px solid #354767; margin: 24px 0; }
   }
 
 
+
+  const orderStatuses = ["Pending", "Confirmed", "In Production", "Ready", "Shipped", "Delivered", "Cancelled"];
+  const paymentStatuses = ["Unpaid", "Payment Submitted", "Partially Paid", "Paid", "Refunded"];
+
+  async function loadOrders() {
+    status("ordersStatus", "Loading orders...");
+    $("ordersList").innerHTML = '<div class="empty">Loading orders...</div>';
+    const { data, error } = await db.from("orders").select("*").order("created_at", { ascending: false }).limit(200);
+    if (error) throw error;
+    const orders = data || [];
+    if (!orders.length) {
+      $("ordersList").innerHTML = '<div class="empty">No orders found yet.</div>';
+      status("ordersStatus", "No orders yet.", "success");
+      return;
+    }
+    $("ordersList").innerHTML = orders.map(o => {
+      const items = Array.isArray(o.items) ? o.items : [];
+      const itemHtml = items.map(item => {
+        const name = escapeHtml(item.name || item.product_name || "Product");
+        const variant = item.variant ? ` (${escapeHtml(item.variant)})` : item.size ? ` (${escapeHtml(item.size)})` : "";
+        const qty = Number(item.qty ?? item.quantity ?? 1);
+        const price = Number(item.price ?? item.unit_price ?? 0);
+        const matter = item.matter ? `<div class="help">Print/engraving: ${escapeHtml(item.matter)}</div>` : "";
+        const instructions = item.instructions ? `<div class="help">Instructions: ${escapeHtml(item.instructions)}</div>` : "";
+        const phone = item.phone ? `<div class="help">Customer WhatsApp: ${escapeHtml(item.phone)}</div>` : "";
+        return `<li>${name}${variant} × ${qty} — ${money(price * qty)}${matter}${instructions}${phone}</li>`;
+      }).join("");
+      const date = o.created_at ? new Date(o.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "Date unavailable";
+      const safeId = escapeHtml(o.id);
+      return `<article class="panel" style="margin:12px 0;border:1px solid var(--line)">
+        <div class="toolbar"><div><h3 style="margin:0">${escapeHtml(o.order_number || "Order #" + o.id)}</h3><div class="muted">${escapeHtml(date)} · ${money(o.total_amount)}</div></div><strong>${escapeHtml(o.customer_name || "Customer")}</strong></div>
+        <p><b>Phone:</b> ${escapeHtml(o.customer_phone || "Not provided")}</p><p><b>Delivery:</b> ${escapeHtml(o.delivery_address || "Not provided")}</p>
+        ${o.customer_notes ? `<p><b>Notes:</b> ${escapeHtml(o.customer_notes)}</p>` : ""}
+        <div><b>Items</b><ul>${itemHtml || "<li>Item details unavailable</li>"}</ul></div>
+        <div class="grid" style="margin-top:14px">
+          <div class="field"><label for="order-status-${safeId}">Order status</label><select id="order-status-${safeId}" data-order-status="${safeId}">${orderStatuses.map(x => `<option ${x === o.order_status ? "selected" : ""}>${x}</option>`).join("")}</select></div>
+          <div class="field"><label for="payment-status-${safeId}">Payment status</label><select id="payment-status-${safeId}" data-payment-status="${safeId}">${paymentStatuses.map(x => `<option ${x === o.payment_status ? "selected" : ""}>${x}</option>`).join("")}</select></div>
+        </div>
+        <div class="actions"><button type="button" class="btn-gold" data-save-order="${safeId}">Save Status</button></div>
+      </article>`;
+    }).join("");
+    status("ordersStatus", `${orders.length} most recent order(s) loaded.`, "success");
+  }
+
+  async function saveOrderStatus(id) {
+    const orderStatus = $("order-status-" + id).value;
+    const paymentStatus = $("payment-status-" + id).value;
+    status("ordersStatus", "Saving order status...");
+    const { error } = await db.from("orders").update({ order_status: orderStatus, payment_status: paymentStatus, updated_at: new Date().toISOString() }).eq("id", id);
+    if (error) throw error;
+    status("ordersStatus", "Order status updated successfully.", "success");
+  }
+
   function setAdminTab(tab) {
-    ["products", "settings", "categories"].forEach(name => {
+    ["products", "orders", "settings", "categories"].forEach(name => {
       $(name + "Tab").classList.toggle("hidden", name !== tab);
     });
+    if (tab === "orders") loadOrders().catch(e => status("ordersStatus", e.message || "Could not load orders.", "error"));
     if (tab === "settings") loadShopSettings().catch(e => status("settingsStatus", e.message, "error"));
     if (tab === "categories") loadCategories().catch(e => status("categoryStatus", e.message, "error"));
   }
@@ -1163,6 +1226,8 @@ Please send a screenshot of this message.`);
   $("settingsForm").addEventListener("submit", saveShopSettings);
   $("reloadSettingsBtn").addEventListener("click", () => loadShopSettings().catch(e => status("settingsStatus", e.message, "error")));
   $("categoryForm").addEventListener("submit", addCategory);
+  $("refreshOrdersBtn").addEventListener("click", () => loadOrders().catch(e => status("ordersStatus", e.message || "Could not load orders.", "error")));
+  $("ordersList").addEventListener("click", event => { const btn = event.target.closest("[data-save-order]"); if (btn) saveOrderStatus(btn.dataset.saveOrder).catch(e => status("ordersStatus", e.message || "Could not update order.", "error")); });
   document.querySelectorAll("[data-admin-tab]").forEach(btn => btn.addEventListener("click", () => setAdminTab(btn.dataset.adminTab)));
   $("addSizeBtn").addEventListener("click", () => addSize());
   $("resetBtn").addEventListener("click", resetForm);
