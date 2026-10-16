@@ -214,6 +214,21 @@
       <div class="grid" id="productGrid"></div>
     </section>
 
+
+    <section class="panel customer-account" id="customerAccount" style="margin:28px 0;padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div><h2 style="margin:0 0 5px">My Account & Orders</h2><p class="sub" id="accountMessage">Sign in or create an account to save and view your order history.</p></div>
+        <button class="outline" type="button" id="accountLogout" style="display:none">Log out</button>
+      </div>
+      <form id="customerAuthForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:14px">
+        <label class="field">Email <input id="customerEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label class="field">Password <input id="customerPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="At least 6 characters"></label>
+        <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><button class="cta" type="submit" id="customerSignIn">Sign in</button><button class="outline" type="button" id="customerSignUp">Create account</button></div>
+      </form>
+      <div id="customerAuthStatus" class="note" role="status" style="margin-top:10px"></div>
+      <div id="customerOrderHistory" style="margin-top:16px"></div>
+    </section>
+
     <section class="custom">
       <div>
         <h2>Need a custom trophy or print?</h2>
@@ -259,7 +274,7 @@
         <label>Design verification *<select id="orderVerify"><option value="yes">Yes — send design on WhatsApp for approval before printing</option><option value="no">No design verification required</option></select></label>
         <label>Customer WhatsApp number *<input id="orderCustomerPhone" type="tel" inputmode="numeric" pattern="[0-9+() -]{10,18}" required placeholder="Your WhatsApp number"></label>
         <div class="order-actions"><button type="button" class="cancel-order" id="cancelOrder">Cancel</button><button type="submit" class="add">Add to Cart</button></div>
-        <div class="note">Your order details are added to this browser's cart and included in the WhatsApp order message when you check out. Sample prices must be replaced before taking real orders.</div>
+        <div class="note">Sign in is required to place orders and view your private order history. Confirm final price, stock and delivery with the shop.</div>
       </form>
     </div>
   </div>
@@ -325,6 +340,55 @@ async function loadCategories(){
 const state = {category:"All", query:"", cart:{}};
 const $ = id => document.getElementById(id);
 const money = value => "₹" + Number(value).toLocaleString("en-IN",{maximumFractionDigits:2});
+
+let customerSession = null;
+function accountStatus(message, isError=false){const el=$("customerAuthStatus");if(el){el.textContent=message||"";el.style.color=isError?"#b42318":"#16834a";}}
+function accountUi(){
+  const signed=!!customerSession;
+  $("customerAuthForm").style.display=signed?"none":"grid";
+  $("accountLogout").style.display=signed?"inline-flex":"none";
+  $("accountMessage").textContent=signed?`Signed in as ${customerSession.user.email}. Your orders are private to your account.`:"Sign in or create an account to save and view your order history.";
+  if(signed) loadCustomerOrders().catch(e=>accountStatus(e.message||"Could not load order history.",true));
+  else $("customerOrderHistory").innerHTML="";
+}
+async function refreshCustomerSession(){
+  if(!supabaseClient) return;
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error) throw error;
+  customerSession=data.session;
+  accountUi();
+}
+async function customerAuth(mode){
+  if(!supabaseClient){accountStatus("Store database is not connected. Refresh the page and try again.",true);return;}
+  const email=$("customerEmail").value.trim(), password=$("customerPassword").value;
+  if(!email||password.length<6){accountStatus("Enter a valid email and a password of at least 6 characters.",true);return;}
+  accountStatus(mode==="signup"?"Creating your account...":"Signing in...");
+  try{
+    if(mode==="signup"){
+      const {data,error}=await supabaseClient.auth.signUp({email,password});
+      if(error) throw error;
+      if(data.session){customerSession=data.session;accountStatus("Account created successfully.");accountUi();}
+      else accountStatus("Account created. Check your email for the verification link, then sign in.");
+    }else{
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error) throw error;
+      customerSession=data.session;accountStatus("Signed in successfully.");accountUi();
+    }
+  }catch(e){accountStatus(e.message||"Account action failed.",true);}
+}
+async function loadCustomerOrders(){
+  if(!customerSession||!supabaseClient)return;
+  $("customerOrderHistory").innerHTML='<p class="note">Loading your orders...</p>';
+  const {data,error}=await supabaseClient.from("orders").select("id,order_number,items,total_amount,order_status,payment_status,amount_paid,created_at").eq("customer_id",customerSession.user.id).order("created_at",{ascending:false}).limit(100);
+  if(error) throw error;
+  if(!data?.length){$("customerOrderHistory").innerHTML='<p class="note">No orders yet. Your orders will appear here after checkout.</p>';return;}
+  $("customerOrderHistory").innerHTML=data.map(o=>{
+    const date=o.created_at?new Date(o.created_at).toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"}):"";
+    const items=Array.isArray(o.items)?o.items.map(i=>`${safeText(i.product_name||i.name||"Product")} × ${Number(i.quantity||i.qty||1)}`).join(", "):"";
+    return `<article style="border:1px solid var(--line);border-radius:10px;padding:13px;margin-top:10px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${safeText(o.order_number||("Order #"+o.id))}</strong><strong>${money(o.total_amount)}</strong></div><div class="note" style="margin:6px 0">${safeText(date)} · Order: ${safeText(o.order_status)} · Payment: ${safeText(o.payment_status)} · Paid: ${money(o.amount_paid||0)}</div><div style="font-size:13px">${items}</div></article>`;
+  }).join("");
+}
+
 function safeText(value){return String(value).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function variantsFor(p){
   if(Array.isArray(p.variants)&&p.variants.length) return p.variants;
@@ -405,10 +469,11 @@ $("checkoutBtn").addEventListener("click",async()=>{
   const phone=String(lines[0].phone||"").replace(/[^0-9+]/g,"");
   if(!phone || phone.replace(/\D/g,"").length<10){toast("Please add a valid WhatsApp number to your product.");return;}
   if(!supabaseClient){toast("Order database is not connected. Please try again later.");console.error("Supabase client is not configured or catalogue did not connect.");return;}
+  if(!customerSession){toast("Please sign in or create an account before placing an order.");$("customerAccount").scrollIntoView({behavior:"smooth",block:"center"});$("customerEmail").focus();return;}
   const button=$("checkoutBtn");button.disabled=true;button.textContent="Saving order...";
   try{
     const orderItems=lines.map(line=>({product_id:line.product.id,product_name:line.product.name,variant_name:line.variant.name,quantity:line.qty,unit_price:Number(line.variant.price),original_price:Number(line.variant.originalPrice||line.variant.price),line_total:Number(line.variant.price)*line.qty,printing_matter:line.matter||"",instructions:line.instructions||"",customer_whatsapp:line.phone||"",design_approval:line.verify==="yes"}));
-    const {data,error}=await supabaseClient.from("orders").insert({customer_name:name,customer_phone:phone,delivery_address:location,customer_notes:notes,items:orderItems,total_amount:Number(cartTotal()),order_status:"Pending",payment_status:"Unpaid",payment_method:"To be confirmed"}).select("order_number").single();
+    const {data,error}=await supabaseClient.from("orders").insert({customer_id:customerSession.user.id,customer_name:name,customer_phone:phone,delivery_address:location,customer_notes:notes,items:orderItems,total_amount:Number(cartTotal()),amount_paid:0,order_status:"Pending",payment_status:"Unpaid",payment_method:"To be confirmed"}).select("order_number").single();
     if(error)throw error;
     const orderNumber=data?.order_number||"Order received";
     let message=`Hello SUBHAKAMNA Awards & Prints! I have placed an order.\nOrder number: ${orderNumber}\n\n`;
@@ -416,14 +481,17 @@ $("checkoutBtn").addEventListener("click",async()=>{
     message+=`\n\nEstimated product total: ${money(cartTotal())}\nCustomer name: ${name}\nDelivery location/PIN: ${location}`;
     if(notes)message+=`\nOrder notes/customisation: ${notes}`;
     message+="\n\nPlease confirm stock, final price, shipping/delivery charges and payment details before I pay.";
-    toast(`Order saved: ${orderNumber}`);openWhatsApp(message);
+    toast(`Order saved: ${orderNumber}`);openWhatsApp(message);state.cart={};renderCart();await loadCustomerOrders();
   }catch(err){console.error("Order save failed:",err);toast("Order could not be saved. Please try again.");alert("Order save failed: "+(err.message||"Please check Supabase setup."));}
   finally{button.disabled=false;button.textContent="Save Order & Send on WhatsApp";}
 });
 $("customOrder").addEventListener("click",e=>{e.preventDefault();openWhatsApp("Hello SUBHAKAMNA Awards & Prints! I need a custom trophy/printing order. Please tell me how to share my design, photo or file and get a quote.");});
+$("customerAuthForm").addEventListener("submit",e=>{e.preventDefault();customerAuth("signin");});
+$("customerSignUp").addEventListener("click",()=>customerAuth("signup"));
+$("accountLogout").addEventListener("click",async()=>{if(supabaseClient)await supabaseClient.auth.signOut();customerSession=null;accountStatus("You have signed out.");accountUi();});
 $("footerPhone").textContent=validWhatsApp()?"+"+WHATSAPP_NUMBER:"Add your number in the website settings";
 renderProducts();renderCart();
-(async()=>{await loadLiveProducts();await loadCategories();renderProducts();})();
+(async()=>{await loadLiveProducts();await loadCategories();if(supabaseClient){await refreshCustomerSession();supabaseClient.auth.onAuthStateChange((_event,session)=>{customerSession=session;accountUi();});}renderProducts();})();
 </script>
 </body>
 </html>
