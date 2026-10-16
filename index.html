@@ -151,6 +151,10 @@
     .brandname small{font-family:"DM Sans",Arial,sans-serif;color:#fff;font-size:10px;letter-spacing:3px;margin-top:7px}
     .shop-description{border-left:1px solid #d7b85e88;padding-left:20px;max-width:590px;font-size:14px;line-height:1.45;color:#f2f5f8}
     .head-controls{display:flex;align-items:stretch;gap:14px}
+    .cart-account-stack{display:flex;flex-direction:column;gap:6px;min-width:126px}
+    .account-top-btn{border:1px solid #f2c45e;border-radius:9px;padding:7px 12px;background:#f8e2a7;color:#102b40;font-weight:800;white-space:nowrap;cursor:pointer}
+    .customer-account.account-hidden{display:none!important}
+    .customer-account{scroll-margin-top:18px}
     .search{min-height:48px;flex:1;border-radius:10px;box-shadow:0 3px 12px #0002}
     .search input{padding:13px 16px;font-size:14px;min-width:0}
     .search button{padding:0 23px;background:linear-gradient(135deg,#ffe094,#f0b83f);font-weight:800}
@@ -197,7 +201,10 @@
           <input id="searchInput" type="search" placeholder="Search trophies, medals, printing, stationery..." aria-label="Search products">
           <button aria-label="Search">Search</button>
         </form>
-        <button class="cartbtn" id="openCart" aria-label="Open shopping cart">🛒 Cart (<span id="cartCount">0</span>)</button>
+        <div class="cart-account-stack">
+          <button class="account-top-btn" type="button" id="toggleCustomerAccount" aria-expanded="false">👤 My Account</button>
+          <button class="cartbtn" id="openCart" aria-label="Open shopping cart">🛒 Cart (<span id="cartCount">0</span>)</button>
+        </div>
       </div>
     </header>
   <main>
@@ -215,7 +222,7 @@
     </section>
 
 
-    <section class="panel customer-account" id="customerAccount" style="margin:28px 0;padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px">
+    <section class="panel customer-account account-hidden" id="customerAccount" style="margin:28px 0;padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
         <div><h2 style="margin:0 0 5px">My Account & Orders</h2><p class="sub" id="accountMessage">Sign in or create an account to save and view your order history.</p></div>
         <button class="outline" type="button" id="accountLogout" style="display:none">Log out</button>
@@ -486,6 +493,13 @@ $("checkoutBtn").addEventListener("click",async()=>{
   finally{button.disabled=false;button.textContent="Save Order & Send on WhatsApp";}
 });
 $("customOrder").addEventListener("click",e=>{e.preventDefault();openWhatsApp("Hello SUBHAKAMNA Awards & Prints! I need a custom trophy/printing order. Please tell me how to share my design, photo or file and get a quote.");});
+$("toggleCustomerAccount").addEventListener("click",()=>{
+  const panel=$("customerAccount");
+  const willOpen=panel.classList.contains("account-hidden");
+  panel.classList.toggle("account-hidden",!willOpen);
+  $("toggleCustomerAccount").setAttribute("aria-expanded",String(willOpen));
+  if(willOpen){panel.scrollIntoView({behavior:"smooth",block:"start"});if(customerSession)loadCustomerOrders().catch(e=>accountStatus(e.message||"Could not load order history.",true));}
+});
 $("customerAuthForm").addEventListener("submit",e=>{e.preventDefault();customerAuth("signin");});
 $("customerSignUp").addEventListener("click",()=>customerAuth("signup"));
 $("accountLogout").addEventListener("click",async()=>{if(supabaseClient)await supabaseClient.auth.signOut();customerSession=null;accountStatus("You have signed out.");accountUi();});
