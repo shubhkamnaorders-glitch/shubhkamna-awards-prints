@@ -14,7 +14,7 @@
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
     a{color:inherit}button,input,select,textarea{font:inherit}button{cursor:pointer}
     .topline{background:#0d1829;color:#fff;text-align:center;padding:8px 12px;font-size:12px;letter-spacing:.2px}
-    header{background:var(--navy);color:white;position:sticky;top:0;z-index:10;box-shadow:0 3px 14px #0b152526}
+    header{background:var(--navy);color:white;position:relative;top:auto;z-index:10;box-shadow:0 3px 14px #0b152526}
     .head{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:16px}
     .brand{display:flex;align-items:center;gap:10px;min-width:215px;text-decoration:none}
     .brandmark{height:44px;width:44px;border:1px solid var(--gold);border-radius:12px;display:grid;place-items:center;color:var(--gold);font-size:24px}
@@ -143,8 +143,8 @@
     body.sidebar-collapsed #categoryNav{padding:0 8px 18px}
     body.sidebar-collapsed #categoryNav button{justify-content:center;padding:8px 4px;gap:0}
     body.sidebar-collapsed #categoryNav .cat-label{display:none}
-    .site-header{position:sticky;top:0;z-index:20;background:linear-gradient(110deg,#061e33,#0b304b);color:#fff;padding:14px 22px 13px;box-shadow:0 4px 16px #06172a25}
-    .head-brand-row{display:flex;align-items:center;gap:20px;min-width:0;margin-bottom:13px}
+    .site-header{position:relative;top:auto;z-index:20;background:linear-gradient(110deg,#061e33,#0b304b);color:#fff;padding:10px 22px 9px;box-shadow:0 4px 16px #06172a25}
+    .head-brand-row{display:flex;align-items:center;gap:20px;min-width:0;margin-bottom:8px}
     .brand{min-width:0;flex:0 0 auto;gap:10px}
     .brandmark{width:48px;height:48px;flex:0 0 48px;border-radius:12px;font-size:27px;background:linear-gradient(145deg,#ffe6a0,#d6a83f);box-shadow:0 3px 12px #0003}
     .brandname{font-family:"Oswald",Impact,sans-serif;font-size:clamp(24px,2.5vw,34px);font-weight:700;letter-spacing:1px;color:#ffd36b;line-height:1}
@@ -158,10 +158,10 @@
     .customer-account:not(.account-hidden){position:fixed!important;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:min(760px,calc(100vw - 28px));max-height:86vh;overflow:auto;margin:0!important;box-shadow:0 24px 80px #0005}
     .account-title-actions{display:flex;align-items:center;gap:8px}
     .customer-account{scroll-margin-top:18px}
-    .search{min-height:48px;flex:1;border-radius:10px;box-shadow:0 3px 12px #0002}
-    .search input{padding:13px 16px;font-size:14px;min-width:0}
+    .search{min-height:42px;flex:1;border-radius:10px;box-shadow:0 3px 12px #0002}
+    .search input{padding:10px 14px;font-size:14px;min-width:0}
     .search button{padding:0 23px;background:linear-gradient(135deg,#ffe094,#f0b83f);font-weight:800}
-    .cartbtn{border:1px solid #f2c45e;border-radius:10px;padding:0 18px;background:#082a44;color:#fff;min-height:48px}
+    .cartbtn{border:1px solid #f2c45e;border-radius:10px;padding:0 18px;background:#082a44;color:#fff;min-height:42px}
     main{max-width:none;margin:0;padding:26px clamp(16px,2vw,28px) 54px}
     .hero,.benefits{display:none!important}
     .product .photo{height:185px;background:radial-gradient(circle at 50% 30%,#fff,#f0f3f6 80%)}
