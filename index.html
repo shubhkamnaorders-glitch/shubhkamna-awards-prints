@@ -154,6 +154,9 @@
     .cart-account-stack{display:flex;flex-direction:column;gap:6px;min-width:126px}
     .account-top-btn{border:1px solid #f2c45e;border-radius:9px;padding:7px 12px;background:#f8e2a7;color:#102b40;font-weight:800;white-space:nowrap;cursor:pointer}
     .customer-account.account-hidden{display:none!important}
+    body.account-open::before{content:"";position:fixed;inset:0;background:rgba(3,18,30,.72);z-index:9998}
+    .customer-account:not(.account-hidden){position:fixed!important;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:min(760px,calc(100vw - 28px));max-height:86vh;overflow:auto;margin:0!important;box-shadow:0 24px 80px #0005}
+    .account-title-actions{display:flex;align-items:center;gap:8px}
     .customer-account{scroll-margin-top:18px}
     .search{min-height:48px;flex:1;border-radius:10px;box-shadow:0 3px 12px #0002}
     .search input{padding:13px 16px;font-size:14px;min-width:0}
@@ -225,7 +228,7 @@
     <section class="panel customer-account account-hidden" id="customerAccount" style="margin:28px 0;padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
         <div><h2 style="margin:0 0 5px">My Account & Orders</h2><p class="sub" id="accountMessage">Sign in or create an account to save and view your order history.</p></div>
-        <button class="outline" type="button" id="accountLogout" style="display:none">Log out</button>
+        <div class="account-title-actions"><button class="outline" type="button" id="accountLogout" style="display:none">Log out</button><button class="outline" type="button" id="closeCustomerAccount" aria-label="Close account panel">✕ Close</button></div>
       </div>
       <form id="customerAuthForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:14px">
         <label class="field">Email <input id="customerEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label>
@@ -497,9 +500,12 @@ $("toggleCustomerAccount").addEventListener("click",()=>{
   const panel=$("customerAccount");
   const willOpen=panel.classList.contains("account-hidden");
   panel.classList.toggle("account-hidden",!willOpen);
+  document.body.classList.toggle("account-open",willOpen);
   $("toggleCustomerAccount").setAttribute("aria-expanded",String(willOpen));
   if(willOpen){panel.scrollIntoView({behavior:"smooth",block:"start"});if(customerSession)loadCustomerOrders().catch(e=>accountStatus(e.message||"Could not load order history.",true));}
 });
+$("closeCustomerAccount").addEventListener("click",()=>{ $("customerAccount").classList.add("account-hidden"); document.body.classList.remove("account-open"); $("toggleCustomerAccount").setAttribute("aria-expanded","false"); });
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){ $("customerAccount").classList.add("account-hidden");document.body.classList.remove("account-open");$("toggleCustomerAccount").setAttribute("aria-expanded","false");}});
 $("customerAuthForm").addEventListener("submit",e=>{e.preventDefault();customerAuth("signin");});
 $("customerSignUp").addEventListener("click",()=>customerAuth("signup"));
 $("accountLogout").addEventListener("click",async()=>{if(supabaseClient)await supabaseClient.auth.signOut();customerSession=null;accountStatus("You have signed out.");accountUi();});
